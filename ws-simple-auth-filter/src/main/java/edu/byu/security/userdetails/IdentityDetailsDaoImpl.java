@@ -53,20 +53,26 @@ public class IdentityDetailsDaoImpl implements IdentityDetailsDao {
 		return getDetails(username);
 	}
 
+	@Override
+	public IdentityDetails loadIdentityDetailsByUsername(final String username) {
+		return (IdentityDetails) loadUserByUsername(username);
+	}
+
 	private IdentityDetails getDetails(final String id) {
 		final HashMap<String, Object> map = new HashMap<String, Object>(2, .999999f);
 		map.put("id", id);
 		final IdentityDetails result = jdbc.query(SQL_PERSON, map, RSE);
-		if (result != null) {
-			final List<GrantedAuthority> list = new LinkedList<GrantedAuthority>();
-			for (final GrantedAuthorityProvider g : gaps) {
-				list.addAll(g.getGrantedAuthorities(result.getPersonId()));
-			}
-			final GrantedAuthorityComparator comparator = new GrantedAuthorityComparator();
-			final TreeSet<GrantedAuthority> set = new TreeSet<GrantedAuthority>(comparator);
-			set.addAll(list);
-			result.setAuthorities(set);
+		if (result == null) {
+			throw new UsernameNotFoundException("The username provided (" + id + ") is not found.");
 		}
+		final List<GrantedAuthority> list = new LinkedList<GrantedAuthority>();
+		for (final GrantedAuthorityProvider g : gaps) {
+			list.addAll(g.getGrantedAuthorities(result.getPersonId()));
+		}
+		final GrantedAuthorityComparator comparator = new GrantedAuthorityComparator();
+		final TreeSet<GrantedAuthority> set = new TreeSet<GrantedAuthority>(comparator);
+		set.addAll(list);
+		result.setAuthorities(set);
 		return result;
 	}
 

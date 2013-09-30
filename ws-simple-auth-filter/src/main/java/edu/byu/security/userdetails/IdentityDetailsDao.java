@@ -11,4 +11,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * @since 05/10/2013
  */
 public interface IdentityDetailsDao extends AuthenticationUserDetailsService, UserDetailsService {
+
+
+	/**
+	 * Performs the same lookup as loadUserByUsername, but returns the result as an IdentityDetails instance, not UserDetails.
+	 *
+	 * @param username the username to look up
+	 * @return the IdentityDetails instance
+	 */
+	public IdentityDetails loadIdentityDetailsByUsername(String username);
 }

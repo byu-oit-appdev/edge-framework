@@ -1,4 +1,4 @@
-package edu.byu.auth.filter;
+package edu.byu.auth.header;
 
 /**
  * Author: Wyatt Taylor (wyatt_taylor@byu.edu)

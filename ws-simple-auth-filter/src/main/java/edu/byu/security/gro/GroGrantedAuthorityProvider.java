@@ -32,7 +32,7 @@ public class GroGrantedAuthorityProvider implements GrantedAuthorityProvider<Gro
 		rse = new GroGrantedAuthorityExtractor(rm);
 	}
 
-	protected final String SQL_SELECT = "select PERSON_ID, GROUP_ID from PERSON_GROUP where PERSON_ID = :personId";
+	protected final String SQL_SELECT = "select GROUP_ID from PERSON_GROUP where PERSON_ID = :personId";
 
 	@Override
 	public List<GroGrantedAuthority> getGrantedAuthorities(final String personId) {
@@ -46,7 +46,6 @@ public class GroGrantedAuthorityProvider implements GrantedAuthorityProvider<Gro
 		public GroGrantedAuthority mapRow(final ResultSet rs, final int rowNum) throws SQLException {
 			final GroGrantedAuthority x = new GroGrantedAuthority();
 			x.setGroupName(rs.getString("GROUP_ID"));
-			x.setPersonId(rs.getString("PERSON_ID"));
 			return x;
 		}
 	}

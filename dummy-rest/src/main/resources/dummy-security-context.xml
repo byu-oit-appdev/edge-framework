@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:sec="http://www.springframework.org/schema/security"
+		xmlns:p="http://www.springframework.org/schema/p"
+		xmlns:c="http://www.springframework.org/schema/c"
+		xsi:schemaLocation="
+		http://www.springframework.org/schema/beans   http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
+		">
+
+	<bean id="dummyRestEntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint" />
+
+	<bean id="restAccessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased"
+			p:allowIfAllAbstainDecisions="false">
+		<constructor-arg name="decisionVoters">
+			<list>
+				<bean class="org.springframework.security.web.access.expression.WebExpressionVoter"
+						p:expressionHandler-ref="methodProviderExpressionHandler" />
+				<ref bean="groVoter" />
+				<ref bean="infoAreaVoter" />
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<sec:authentication-manager alias="dummyAuthenticationManager">
+		<sec:authentication-provider ref="headerAuthProvider" />
+	</sec:authentication-manager>
+
+	<sec:http pattern="/**" use-expressions="true"
+			entry-point-ref="dummyRestEntryPoint"
+			authentication-manager-ref="dummyAuthenticationManager"
+			access-decision-manager-ref="restAccessDecisionManager">
+		<sec:port-mappings>
+			<sec:port-mapping http="80" https="443" />
+			<sec:port-mapping http="8080" https="8443" />
+			<sec:port-mapping http="38080" https="38181" />
+		</sec:port-mappings>
+		<sec:custom-filter ref="authorizedProxyFilter" before="EXCEPTION_TRANSLATION_FILTER" />
+		<sec:custom-filter ref="headerAuthenticationFilter" after="EXCEPTION_TRANSLATION_FILTER" />
+		<sec:intercept-url pattern="/v1/test/secure/**" access="@groMethodProvider.isMemberOfAnyGroup('GRO_ESENG', 'GRO_ADMINISTRATIVE')" requires-channel="https" />
+		<sec:intercept-url pattern="/**" access="permitAll" />
+	</sec:http>
+
+	<bean id="authorizedProxyFilter" class="edu.byu.auth.header.AllowedHostRequestFilter">
+		<property name="allowedIpAddresses">
+			<list>
+				<value>10.5.36.76</value>
+				<value>10.5.36.88</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="basicAuthSuccessHandler" class="edu.byu.auth.header.BasicAuthenticationSuccessHandler" />
+
+	<bean id="headerAuthenticationFilter" class="edu.byu.auth.header.HeaderAuthenticationFilter"
+			c:defaultFilterProcessesUrl="/"
+			p:allowSessionCreation="false" p:iddao-ref="headerAuthIdentityDetailsDao"
+			p:authenticationSuccessHandler-ref="basicAuthSuccessHandler" />
+
+
+</beans>

@@ -17,8 +17,34 @@
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
 		">
 
-	<bean id="headerAuthIdentityDetailsDao" class="edu.byu.security.userdetails.IdentityDetailsDaoImpl"
-			c:jdbc-ref="headerAuthJdbcTemplate" />
+	<!-- beans for SPeL providers -->
+
+	<bean id="groMethodProvider" class="edu.byu.security.gro.GroExpressionMethodProvider" />
+
+	<bean id="infoAreaMethodProvider" class="edu.byu.security.infoArea.InfoAreaExpressionMethodProvider" />
+
+	<bean id="methodProviderExpressionHandler" class="edu.byu.security.common.MethodProviderWebSecurityExpressionHandler">
+		<property name="methodProviders">
+			<list>
+				<ref bean="groMethodProvider" />
+				<ref bean="infoAreaMethodProvider" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="headerAuthProvider" class="edu.byu.auth.header.HeaderAuthenticationProvider"
+			p:identityDetailsDao-ref="headerAuthIdentityDetailsDao" />
+
+	<!-- access voter beans -->
+
+	<!--<bean id="groVoter" class="org.springframework.security.access.vote.RoleVoter"-->
+	<!--p:rolePrefix="#{ T(edu.byu.security.gro.GroGrantedAuthority).GRO_AUTHORITY_PREFIX }"/>-->
+
+	<bean id="groVoter" class="edu.byu.security.vote.GroVoter" />
+
+	<bean id="infoAreaVoter" class="edu.byu.security.vote.InfoAreaVoter" />
+
+	<!--  -->
 
 	<bean id="headerAuthInfoAreaProvider" class="edu.byu.security.infoArea.InfoAreaGrantedAuthorityProvider"
 			c:jdbc-ref="headerAuthJdbcTemplate" />
@@ -29,13 +55,23 @@
 	<bean id="headerAuthJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate"
 			c:dataSource-ref="headerAuthDataSource" />
 
+	<bean id="headerAuthIdentityDetailsDao" class="edu.byu.security.userdetails.IdentityDetailsDaoImpl"
+			c:jdbc-ref="headerAuthJdbcTemplate">
+		<property name="gaps">
+			<list>
+				<ref bean="headerAuthGroProvider" />
+				<ref bean="headerAuthInfoAreaProvider" />
+			</list>
+		</property>
+	</bean>
+
 	<tx:advice id="headerAuthTxAdvice" transaction-manager="headerAuthTransactionManager">
 		<tx:attributes>
 			<tx:method name="*" read-only="true" isolation="DEFAULT" propagation="REQUIRED" timeout="5" />
 		</tx:attributes>
 	</tx:advice>
 
-	<aop:config proxy-target-class="true">
+	<aop:config proxy-target-class="false">
 		<aop:pointcut id="headerAuthPointcut1" expression="execution(* edu.byu.security.userdetails.IdentityDetailsDaoImpl.*(..))" />
 		<aop:pointcut id="headerAuthPointcut2" expression="execution(* edu.byu.security.gro.GroGrantedAuthorityProvider.getGrantedAuthorities(..))" />
 		<aop:pointcut id="headerAuthPointcut3" expression="execution(* edu.byu.security.infoArea.InfoAreaGrantedAuthorityProvider.getGrantedAuthorities(..))" />

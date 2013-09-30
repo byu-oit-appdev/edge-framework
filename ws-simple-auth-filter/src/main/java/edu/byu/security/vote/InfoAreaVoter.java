@@ -37,7 +37,7 @@ public final class InfoAreaVoter implements ExtendedVoter {
 	/**
 	 * This voter supports all types of classes.
 	 *
-	 * @param klass Class to determine if thie voter supports.
+	 * @param klass Class to determine if this voter supports.
 	 * @return always <code>true</code>
 	 */
 	public boolean supports(final Class klass) {

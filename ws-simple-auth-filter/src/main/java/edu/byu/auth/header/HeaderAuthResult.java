@@ -1,12 +1,8 @@
-package edu.byu.auth.filter;
+package edu.byu.auth.header;
 
 import edu.byu.security.userdetails.IdentityDetails;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Collection;
-import java.util.Map;
 
 /**
  * Author: Wyatt Taylor (wyatt_taylor@byu.edu)
@@ -15,15 +11,18 @@ import java.util.Map;
  * @author Wyatt Taylor (wyatt_taylor@byu.edu)
  * @since 05/10/2013
  */
-public class HeaderAuth extends AbstractAuthenticationToken implements Authentication {
+public class HeaderAuthResult extends AbstractAuthenticationToken implements Authentication {
+
+	private static final long serialVersionUID = 1L;
 
 	private IdentityDetails id;
 	private String headerUsed;
 
-	public HeaderAuth(final IdentityDetails id, final String headerUsed) {
+	public HeaderAuthResult(final IdentityDetails id, final String headerUsed, final boolean authenticated) {
 		super(id.getAuthorities());
 		this.id = id;
 		this.headerUsed = headerUsed;
+		super.setAuthenticated(authenticated);
 	}
 
 	@Override

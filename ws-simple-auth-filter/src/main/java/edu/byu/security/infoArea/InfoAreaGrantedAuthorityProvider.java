@@ -36,7 +36,7 @@ public class InfoAreaGrantedAuthorityProvider implements GrantedAuthorityProvide
 	protected final String SQL_SELECT = "select PERSON_ID, INFORMATIONAL_AREA, CREDIT_INSTITUTION, to_char(EFFECTIVE_DATE, 'YYYY-MM-DD') as EFFECTIVE_DATE, " +
 			"LIMITATION_TYPE, LIMITATION_VALUE, to_char(EXPIRED_DATE, 'YYYY-MM-DD') as EXPIRED_DATE, UPDATE_TYPE " +
 			"from PRO.USER_AUTHORIZATION_VW " +
-			"where PERSON_ID = :personId and CREDIT_INSTITUTION = 'BYU PROVO' and sysdate > EFFECTIVE_DATE and (EXIPRED_DATE is null or EXPIRED_DATE > sysdate) " +
+			"where PERSON_ID = :personId and CREDIT_INSTITUTION = 'BYU PROVO' and sysdate > EFFECTIVE_DATE and (EXPIRED_DATE is null or EXPIRED_DATE > sysdate) " +
 			"order by EFFECTIVE_DATE";
 
 	@Override
