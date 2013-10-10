@@ -16,6 +16,10 @@
 	
 	<dependencies>
 		<dependency>
+			<groupId>edu.byu.edge.framework</groupId>
+			<artifactId>edge-util</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<scope>provided</scope>
@@ -88,6 +92,28 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
 	</dependencies>
-</project>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>edu.byu.edge.framework</groupId>
+				<artifactId>edge-util</artifactId>
+				<version>1.0.0</version>
+				<scope>compile</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+</project>

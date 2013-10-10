@@ -1,6 +1,9 @@
 package edu.byu.auth.header;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
+import edu.byu.edge.util.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.filter.GenericFilterBean;
@@ -12,11 +15,21 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * This filter has no dependence on Spring per se. Spring may be used to configure this filter, however this is optional.
  * The purpose of this filter is to ensure that all requests that pass through it are from authorized hosts.
  * It's inteded use is to guarantee that a service only accepts requests from the SOA proxies or localhost.
+ * Allowed format of IP addresses is in dotted decimal format (123.45.67.101) or subnets may be specified by appending a forward slash and the bit mask (123.45.67.0/24).
+ *
+ * The behavior is to first use the file specified by the property. If the property is not set, or the file does not exist or is empty, then the
+ * system property is used. If the system property is not set or the file specified does not exist or is empty, then the addresses set to the
+ * allowedIpAddresses property is used. If no addresses are specified at this point, then an exception is thrown.
+ *
+ * If the only allowed IP address is to be localhost, then localhost MUST be set through one of the other properties. It is insufficient to simply
+ * set allowLocalhost to true. This will result in an exception. In other words, to have localhost be the only allowed host to get through this
+ * filter, specify 127.0.0.1 (or equivalent netmask) through a file or the allowedIpAddresses property.
  *
  * The list of allowed IP addresses can be specified in three ways:
  * 1. Set the list of allowed IP addresses directly (allowedIpAddresses property)
@@ -35,13 +48,46 @@ public class AllowedHostRequestFilter extends GenericFilterBean implements Initi
 
 	private static final Logger LOG = Logger.getLogger(AllowedHostRequestFilter.class);
 
-	protected Set<String> allowedIpAddresses;
-	protected String allowedIpFileName;
-	protected volatile String allowedIpFilePropertyName = "byu.allowed.ip.file";
-	protected boolean allowLocalhost;
+	public static final Pattern IP_PATTERN = Pattern.compile("^" +
+			"(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])" +
+			"\\." +
+			"(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])" +
+			"\\." +
+			"(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])" +
+			"\\." +
+			"(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])" +
+			"$");
+
+	public static final Pattern NET_MASK_PATTERN = Pattern.compile("^" +
+			"(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])" +
+			"\\." +
+			"(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])" +
+			"\\." +
+			"(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])" +
+			"\\." +
+			"(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])" +
+			"\\/(3[0-2]|[1-2][0-9]|[1-9])" +
+			"$");
+
+	/*
+	This can be static since it only helps facilitate the creation of bitmasks. In fact, by making it static, all instances in the same classloader
+	can now benefit from.
+	 */
+	private static Map<String, String> IP_CONVERSION_CACHE = Collections.synchronizedMap(new TreeMap<String, String>());
+
+	private Set<String> allowedIpAddresses;
+	private String allowedIpFileName;
+	private volatile String allowedIpFilePropertyName = "byu.allowed.ip.file";
+	private boolean allowLocalhost;
+
+	private Set<String> realAllowedAddresses;
+	private Set<String> alreadyAuthorizedAddresses;
+	private final Function<String, String[]> ipToBitmask = new IpToBitsFunction();
 
 	public AllowedHostRequestFilter() {
 		this.allowLocalhost = true;
+		this.realAllowedAddresses = new TreeSet<String>();
+		this.alreadyAuthorizedAddresses = Collections.synchronizedSet(new TreeSet<String>());
 	}
 
 	public void setAllowedIpAddresses(final Collection<String> allowedIpAddresses) {
@@ -64,72 +110,104 @@ public class AllowedHostRequestFilter extends GenericFilterBean implements Initi
 	@Override
 	public void afterPropertiesSet() {
 		if (!checkList()) throw new IllegalArgumentException("Specify either a file name or a list of allowed IP addresses or a System property that points to a file of allowed IP addresses.");
+		if (allowLocalhost) addLocalhost();
 	}
 
-	protected boolean checkList() {
-		if ((allowedIpAddresses == null || allowedIpAddresses.isEmpty()) && !checkFileName()) return false;
-		if (allowLocalhost && !allowedIpAddresses.contains("127.0.0.1")) allowedIpAddresses.add("127.0.0.1");
-		return true;
-	}
-
-	protected boolean checkFileName() {
-		if ((allowedIpFileName == null || "".equals(allowedIpFileName)) && ! checkProperty()) return false;
-		final File file = new File(allowedIpFileName);
-		if (!file.exists() || !file.isFile() || file.length() < 7) return false;
-		BufferedReader in = null;
-		final List<String> list = new LinkedList<String>();
-		try {
-			in = new BufferedReader(new FileReader(file));
-			String line;
-			while ((line = in.readLine()) != null) {
-				if (!line.startsWith("#")) list.add(line);
-			}
+	protected final boolean checkList() {
+		if (allowedIpFileName != null && !"".equals(allowedIpFileName) && parseLoadedIntoReal(tryFileLoad(allowedIpFileName)))
 			return true;
-		} catch (final Throwable t) {
-			return false;
-		} finally {
-			this.setAllowedIpAddresses(list);
-			if (in != null) try {
-				in.close();
-			} catch (IOException e) {
+		final String propVal = getPropertyValue();
+		if (!"".equals(propVal) && parseLoadedIntoReal(tryFileLoad(propVal)))
+			return true;
+		return parseLoadedIntoReal(allowedIpAddresses) && !realAllowedAddresses.isEmpty();
+	}
+
+	protected final Set<String> tryFileLoad(final String fileName) {
+		final Set<String> result = new HashSet<String>(8, .999999f);
+		final File fin = new File(fileName);
+		if (fin.exists() && fin.isFile()) {
+			BufferedReader in = null;
+			try {
+				in = new BufferedReader(new FileReader(fin));
+				String line;
+				while ((line = in.readLine()) != null) {
+					if (!line.startsWith("#")) result.add(line);
+				}
+			} catch (final Throwable t) {
+				LOG.error("Error reading IP address file " + fileName + ".", t);
+			} finally {
+				if (in != null) try {
+					in.close();
+				} catch (IOException ignore) {
+				}
 			}
 		}
+		return result;
 	}
 
-	protected boolean checkProperty() {
-		if (allowedIpFilePropertyName == null || "".equals(allowedIpFilePropertyName)) return false;
+	protected final String getPropertyValue() {
+		if (allowedIpFilePropertyName == null || "".equals(allowedIpFilePropertyName)) return "";
 		String propVal = System.getProperty(allowedIpFilePropertyName);
-		if (propVal == null || "".equals(propVal)) propVal = System.getenv(allowedIpFilePropertyName);
-		if (propVal == null || "".equals(propVal)) return false;
-		allowedIpFileName = propVal;
-		return true;
+		if (propVal != null && !"".equals(propVal)) return propVal;
+		propVal = System.getenv(allowedIpFilePropertyName);
+		if (propVal != null && !"".equals(propVal)) return propVal;
+		return "";
 	}
 
-//	@Override
-//	public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
-//		if (authentication == null) return null;
-//		if (!HeaderAuthToken.class.isAssignableFrom(authentication.getClass())) return null;
-//		final HeaderAuthToken hat = (HeaderAuthToken) authentication;
-//		final List<String> remoteAddr = hat.getRemoteHostIpAddress();
-//		final List<String> temp = new ArrayList<String>(remoteAddr.size());
-//		temp.addAll(remoteAddr);
-//		remoteAddr.retainAll(allowedIpAddresses);
-//		if (temp.size() == 0) {
-//			LOG.info("Rejecting request due to unauthorized source host. " + remoteAddr);
-//			throw new IllegalArgumentException("Request does not come from an allowed host.");
-//		}
-//		final Map<String, String> map = hat.getAuthHeaders();
-//		if (map.isEmpty()) return null;
-//		final String[] idToLookup = hat.getBestId();
-//		if ("".equals(idToLookup[1])) throw new IllegalArgumentException("Unable to find correct token header.");;
-//		try {
-//			final IdentityDetails details = (IdentityDetails) iddao.loadUserByUsername(idToLookup[1]);
-//			return new HeaderAuthResult(details, idToLookup[0]);
-//		} catch (final Throwable t) {
-//			LOG.error(String.format("Error processing authentication: '%s' '%s'.", idToLookup[0], idToLookup[1]), t);
-//			throw new IllegalArgumentException("Unable to process authentication.", t);
-//		}
-//	}
+	protected final boolean parseLoadedIntoReal(final Set<String> loaded) {
+		for (final String s : loaded) {
+			if (NET_MASK_PATTERN.matcher(s).matches()) {
+				final String[] vals = s.split("\\/");
+				final int bits = Integer.parseInt(vals[1]);
+				final String ipbits = parseIpToBits(vals[0]);
+				realAllowedAddresses.add(ipbits.substring(0, bits));
+			} else if (IP_PATTERN.matcher(s).matches()) {
+				realAllowedAddresses.add(parseIpToBits(s));
+			} else {
+				LOG.info("Invalid IP address information: " + s);
+			}
+		}
+		return !realAllowedAddresses.isEmpty();
+	}
+
+	protected final void addLocalhost() {
+		realAllowedAddresses.add(parseIpToBits("127.0.0.1").substring(0, 8));
+	}
+
+	protected static String parseIpToBits(final String ipAddr) {
+		if (IP_CONVERSION_CACHE.containsKey(ipAddr)) return IP_CONVERSION_CACHE.get(ipAddr);
+		if (NET_MASK_PATTERN.matcher(ipAddr).matches()) {
+			final String[] vals = ipAddr.split("\\/");
+			final String bits = parseIpToBits(vals[0]).substring(0, Integer.parseInt(vals[1]));
+			IP_CONVERSION_CACHE.put(ipAddr, bits);
+			return bits;
+		} else if (IP_PATTERN.matcher(ipAddr).matches()) {
+			final String[] strings = ipAddr.split("\\.");
+			final String a = StringUtils.padLeft(Long.toBinaryString(Integer.parseInt(strings[0])), '0', 8);
+			final String b = StringUtils.padLeft(Long.toBinaryString(Integer.parseInt(strings[1])), '0', 8);
+			final String c = StringUtils.padLeft(Long.toBinaryString(Integer.parseInt(strings[2])), '0', 8);
+			final String d = StringUtils.padLeft(Long.toBinaryString(Integer.parseInt(strings[3])), '0', 8);
+			final String bits = a + b + c + d;
+			IP_CONVERSION_CACHE.put(ipAddr, bits);
+			return bits;
+		}
+		return ipAddr;
+	}
+
+	protected final boolean isAddressAllowed(final Set<String> addresses) {
+		if (addresses == null || addresses.isEmpty()) return false;
+		if (!Sets.intersection(addresses, alreadyAuthorizedAddresses).isEmpty()) return true;
+		final Collection<String[]> masks = Collections2.transform(addresses, ipToBitmask);
+		for (final String[] m : masks) {
+			for (final String a : realAllowedAddresses) {
+				if (m[1].startsWith(a)) {
+					alreadyAuthorizedAddresses.add(m[0]);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
@@ -139,11 +217,19 @@ public class AllowedHostRequestFilter extends GenericFilterBean implements Initi
 		if (request instanceof HttpServletRequest) {
 			remoteAddresses.addAll(HeaderAuthUtils.extractRemoteIpAddress((HttpServletRequest) request));
 		}
-		if (Sets.intersection(remoteAddresses, allowedIpAddresses).size() > 0) {
+
+		if (isAddressAllowed(remoteAddresses)) {
 			chain.doFilter(request, response);
 		} else {
 			LOG.info("Rejecting request from unauthorized remote IP address: " + remoteAddr + ".");
 			throw new IllegalArgumentException("The request was not made through a trusted proxy.");
+		}
+	}
+
+	private static class IpToBitsFunction implements Function<String, String[]> {
+		@Override
+		public String[] apply(final String input) {
+			return new String[]{input, parseIpToBits(input)};
 		}
 	}
 }
