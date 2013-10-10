@@ -9,6 +9,7 @@
 
 	<modules>
 		<module>edge-pom</module>
+		<module>edge-util</module>
 		<module>ws-simple-auth-filter</module>
 		<module>ws-auth-filters</module>
 		<module>framework-swing</module>
