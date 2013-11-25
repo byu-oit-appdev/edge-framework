@@ -221,9 +221,23 @@ public class AllowedHostRequestFilter extends GenericFilterBean implements Initi
 		if (isAddressAllowed(remoteAddresses)) {
 			chain.doFilter(request, response);
 		} else {
-			LOG.info("Rejecting request from unauthorized remote IP address: " + remoteAddr + ".");
+			final String allAddresses = allAddrToString(remoteAddr, remoteAddresses);
+			LOG.info("Rejecting request from unauthorized remote IP address: " + allAddresses + ".");
 			throw new IllegalArgumentException("The request was not made through a trusted proxy.");
 		}
+	}
+
+	private static String allAddrToString(final String primaryAddr, final Set<String> allAddr) {
+		final StringBuilder sb = new StringBuilder(32 + 16 * (1 + allAddr.size()));
+		sb.append("main: ");
+		sb.append(primaryAddr);
+		sb.append("  all: ");
+		for (final Iterator<String> iter = allAddr.iterator(); iter.hasNext(); ) {
+			final String s = iter.next();
+			sb.append(s);
+			if (iter.hasNext()) sb.append(", ");
+		}
+		return sb.toString();
 	}
 
 	private static class IpToBitsFunction implements Function<String, String[]> {

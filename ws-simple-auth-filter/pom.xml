@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>edu.byu.edge.framework</groupId>
 	<artifactId>ws-simple-auth-filter</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<name>edge simple ws authentication filter project</name>
 	<packaging>jar</packaging>
 	
