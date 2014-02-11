@@ -7,6 +7,14 @@
 	<version>1.0</version>
 	<packaging>pom</packaging>
 
+	<description>
+		This is a pom to facilitate opening all modules in an IDE together.
+		This is not intended to facilitate the building of all modules together.
+		Each module is versioned separately.
+		When there is a need to have several cohesive modules versioned together,
+		they should be placed in a sub-module with its own build pom.
+	</description>
+
 	<modules>
 		<module>edge-pom</module>
 		<module>edge-util</module>
@@ -16,6 +24,7 @@
 		<module>swing-components</module>
 		<module>jdbc-gen</module>
 		<module>jdbc-da</module>
+		<module>query-tools</module>
 		<module>dummy-rest</module>
 		<module>dummy-web</module>
 	</modules>
