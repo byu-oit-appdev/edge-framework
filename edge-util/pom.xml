@@ -3,14 +3,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>edu.byu.edge.framework</groupId>
 	<artifactId>edge-util</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<name>Edge Framework Utility Project</name>
 	<packaging>jar</packaging>
 	
 	<parent>
 		<groupId>edu.byu.edge.framework</groupId>
 		<artifactId>edge-pom</artifactId>
-		<version>1.0.0</version>
+		<version>1.2</version>
 		<relativePath>../edge-pom/pom.xml</relativePath>
 	</parent>
 

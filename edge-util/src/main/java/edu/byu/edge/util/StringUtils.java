@@ -26,6 +26,9 @@ public class StringUtils {
 	public static String padLeft(final String base, final char padWith, final int length) {
 		if (base == null) return base;
 		if (base.length() >= length) return base;
+		if (length < 8 || length - base.length() < 2) {
+			return padLeft(padWith + base, padWith, length);
+		}
 		final char[] c = new char[length];
 		Arrays.fill(c, 0, length - base.length(), padWith);
 		System.arraycopy(base.toCharArray(), 0, c, length - base.length(), base.length());
@@ -43,6 +46,9 @@ public class StringUtils {
 	public static String padRight(final String base, final char padWith, final int length) {
 		if (base == null) return base;
 		if (base.length() >= length) return base;
+		if (length < 8 || length - base.length() < 2) {
+			return padRight(base + padWith, padWith, length);
+		}
 		final char[] c = Arrays.copyOf(base.toCharArray(), length);
 		Arrays.fill(c, base.length(), length, padWith);
 		return new String(c);
