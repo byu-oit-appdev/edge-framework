@@ -37,6 +37,7 @@
 		<commons-pool.version>1.6</commons-pool.version>
 		<data-access.version>1.0.0.0</data-access.version>
 		<dom4j.version>1.6.1</dom4j.version>
+		<edge-util.version>1.0.1</edge-util.version>
 		<ehcache-compat.version>2.5.7</ehcache-compat.version>
 		<ehcache-latest.version>2.6.8</ehcache-latest.version>
 		<ehcache-full.version>2.7.4</ehcache-full.version>
@@ -57,6 +58,7 @@
 		<jaxb-api.version>2.2.7</jaxb-api.version>
 		<jaxb-impl.version>2.2.7</jaxb-impl.version>
 		<jaxrs.version>1.1.1</jaxrs.version>
+		<jdbc-da.version>1.1.0</jdbc-da.version>
 		<!--<jersey.version>1.1.5.2</jersey.version>-->
 		<jersey.version>1.18</jersey.version>
 		<joda-time.version>2.1</joda-time.version>
@@ -69,11 +71,13 @@
 		<log4j-extras.version>1.2.17</log4j-extras.version>
 		<mysql-connector-java.version>5.1.28</mysql-connector-java.version>
 		<oracle.version>11.2.0.3.0</oracle.version>
+		<querytools.version>1.0.0</querytools.version>
 		<saaj-api.version>1.3.5</saaj-api.version>
 		<scala.version>2.10.3</scala.version>
 		<servlet.api.version>2.5</servlet.api.version>
 		<servlet.jsp.version>2.1</servlet.jsp.version>
 		<servlet.jstl.version>1.1.2</servlet.jstl.version>
+		<simpleauth.version>1.0.1</simpleauth.version>
 		<slf4j.version>1.7.5</slf4j.version>
 		<!--<spring.version>3.0.7.RELEASE</spring.version>-->
 		<spring.version>3.1.4.RELEASE</spring.version>
@@ -104,6 +108,30 @@
 				<groupId>edu.byu.da</groupId>
 				<artifactId>data-access-config</artifactId>
 				<version>${data-access.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>edu.byu.edge.framework</groupId>
+				<artifactId>edge-util</artifactId>
+				<version>${edge-util.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>edu.byu.edge.framework</groupId>
+				<artifactId>jdbc-da</artifactId>
+				<version>1.1.0</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>edu.byu.edge.framework</groupId>
+				<artifactId>query-tools</artifactId>
+				<version>${querytools.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>edu.byu.edge.framework</groupId>
+				<artifactId>ws-simple-auth-filter</artifactId>
+				<version>${simpleauth.version}</version>
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
