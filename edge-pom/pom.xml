@@ -62,6 +62,7 @@
 		<joda-time.version>2.1</joda-time.version>
 		<jta.version>1.1</jta.version>
 		<junit.version>4.11</junit.version>
+		<lmax-disruptor.version>3.2.0</lmax-disruptor.version>
 		<log4j.version>1.2.17</log4j.version>
 		<!-- Please be aware that log4j 2 as the destination requires different config and you probably need to include the log4j 1.x api bridge -->
 		<log4j2.version>2.0-beta9</log4j2.version>
@@ -266,6 +267,12 @@
 				<artifactId>guava</artifactId>
 				<version>${guava.version}</version>
 				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.lmax</groupId>
+				<artifactId>disruptor</artifactId>
+				<version>${lmax-disruptor.version}</version>
+				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.oracle</groupId>
