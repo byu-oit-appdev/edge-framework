@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>edu.byu.edge.framework</groupId>
 	<artifactId>jdbc-da</artifactId>
-	<version>1.2.0-SNAPSHOT</version>
+	<version>1.2.0</version>
 	<name>JDBC Data Access Framework Project</name>
 	<packaging>jar</packaging>
 	
