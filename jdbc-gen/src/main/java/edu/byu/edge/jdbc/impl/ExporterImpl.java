@@ -44,13 +44,25 @@ public class ExporterImpl implements Exporter {
 		final File mapper = createFolder(da, "mapper");
 		final File daimpl = createFolder(da, "jdbc");
 
+		try {
+			exportBaseDaoImpl(daimpl, pkgName);
+		} catch (final Exception e) {
+			OUT.println("Error generating BaseDaoImpl. " + e.getMessage());
+		}
+
 		for (final Table t : tables) {
 			try {
 				exportTable(new File[]{base, domain, da, daimpl, mapper}, pkgName, t);
 			} catch (final Exception e) {
-				OUT.println("Error generating class for " + t.getTableName());
+				OUT.println("Error generating class for " + t.getTableName() + ". " + e.getMessage());
 			}
 		}
+	}
+
+	private void exportBaseDaoImpl(final File path, final String pkgName) throws IOException {
+		final Map<String, Object> map = new TreeMap<String, Object>();
+		map.put("package", pkgName);
+		doExport(path, "BaseDaoImpl.java", "baseDaoImpl.ftl", map);
 	}
 
 	private void exportTable(final File[] paths, final String pkgName, final Table tbl) throws IOException {
