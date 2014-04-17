@@ -9,7 +9,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.TreeMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -36,15 +38,29 @@ public class OracleParser implements Parser {
 	}
 
 	@Override
-	public List<Table> getTables(final String schema) {
-		final HashMap<String, Object> paramMap = new HashMap<String, Object>(2, .9999f);
+	public List<Table> getTables(final String schema, final String tableNames) {
+		final TreeMap<String, Object> paramMap = new TreeMap<String, Object>();
 		paramMap.put("schema", schema);
-		return jdbc.query("select OWNER, TABLE_NAME from ALL_TABLES where OWNER = :schema", paramMap, tableRowMapper);
+		if (tableNames == null || "*".equals(tableNames) || "".equals(tableNames)) {
+			return jdbc.query("select OWNER, TABLE_NAME from ALL_TABLES where OWNER = :schema union select OWNER, VIEW_NAME from ALL_VIEWS where OWNER = :schema ", paramMap, tableRowMapper);
+		} else {
+			final String[] sa = tableNames.split(",");
+			for (int i = 0; i < sa.length; i++) {
+				if (sa[i] == null) sa[i] = "";
+				sa[i] = sa[i].trim().toUpperCase();
+			}
+			paramMap.put("tables", Arrays.asList(sa));
+			return jdbc.query(
+					"select OWNER, TABLE_NAME from ALL_TABLES where OWNER = :schema and upper(TABLE_NAME) in (:tables) " +
+							"union " +
+							"select OWNER, VIEW_NAME from ALL_VIEWS where OWNER = :schema and upper(VIEW_NAME) in (:tables) ",
+					paramMap, tableRowMapper);
+		}
 	}
 
 	@Override
 	public List<Column> getColumnsForTable(final Table t) {
-		final HashMap<String, Object> map = new HashMap<String, Object>(3, .9999f);
+		final TreeMap<String, Object> map = new TreeMap<String, Object>();
 		map.put("schema", t.getSchema());
 		map.put("table", t.getTableName());
 		return jdbc.query("select COLUMN_NAME, COLUMN_ID, NULLABLE, DATA_TYPE, CHAR_COL_DECL_LENGTH, DATA_PRECISION, DATA_SCALE from ALL_TAB_COLUMNS where owner = :schema and TABLE_NAME = :table", map, columnRowMapper);

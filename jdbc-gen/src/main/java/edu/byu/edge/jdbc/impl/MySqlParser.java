@@ -8,7 +8,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.TreeMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -35,15 +36,31 @@ public class MySqlParser implements Parser {
 	}
 
 	@Override
-	public List<Table> getTables(final String schema) {
-		final HashMap<String, Object> paramMap = new HashMap<String, Object>(2, .9999f);
+	public List<Table> getTables(final String schema, final String tableNames) {
+		final TreeMap<String, Object> paramMap = new TreeMap<String, Object>();
 		paramMap.put("schema", schema);
-		return jdbc.query("select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA = :schema", paramMap, tableRowMapper);
+		if (tableNames == null || "*".equals(tableNames) || "".equals(tableNames)) {
+			return jdbc.query(
+					"select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA = :schema union select * from INFORMATION_SCHEMA.VIEWS where TABLE_SCHEMA = :schema ",
+					paramMap, tableRowMapper);
+		} else {
+			final String[] sa = tableNames.split(",");
+			for (int i = 0; i < sa.length; i++) {
+				if (sa[i] == null) sa[i] = "";
+				sa[i] = sa[i].trim().toUpperCase();
+			}
+			paramMap.put("tables", Arrays.asList(sa));
+			return jdbc.query(
+					"select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA = :schema and upper(TABLE_NAME) in (:tables) " +
+							"union " +
+							"select * from INFORMATION_SCHEMA.VIEWS where TABLE_SCHEMA = :schema and upper(TABLE_NAME) in (:tables) ",
+					paramMap, tableRowMapper);
+		}
 	}
 
 	@Override
 	public List<Column> getColumnsForTable(final Table t) {
-		final HashMap<String, Object> map = new HashMap<String, Object>(3, .9999f);
+		final TreeMap<String, Object> map = new TreeMap<String, Object>();
 		map.put("schema", t.getSchema());
 		map.put("table", t.getTableName());
 		return jdbc.query("select * from INFORMATION_SCHEMA.COLUMNS where TABLE_SCHEMA = :schema and TABLE_NAME = :table order by ORDINAL_POSITION", map, columnRowMapper);

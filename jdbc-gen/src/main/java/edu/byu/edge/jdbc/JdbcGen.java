@@ -9,7 +9,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.env.MapPropertySource;
 
 import java.io.*;
-import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -49,7 +49,9 @@ public class JdbcGen {
 		if (p == null) return;
 		OUT.println(p.getSchemaNameMessage());
 		final String schema = getInput();
-		final List<Table> tables = p.getTables(schema);
+		OUT.println("Please enter a comma-separated list of table names to output. A '*' or an empty line means all.");
+		final String tableSet = getInput();
+		final List<Table> tables = p.getTables(schema, tableSet);
 		if (tables == null || tables.isEmpty()) {
 			OUT.println("No tables found.");
 			return;
@@ -132,7 +134,7 @@ public class JdbcGen {
 		final String[] p = getParams();
 		final ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext();
 		ctx.registerShutdownHook();
-		final HashMap<String, Object> map = new HashMap<String, Object>(5, .9999f);
+		final TreeMap<String, Object> map = new TreeMap<String, Object>();
 		ctx.getEnvironment().getPropertySources().addFirst(new MapPropertySource("MY_PROPS", map));
 		map.put("jdbcUrl", p[0]);
 		map.put("user", p[1]);

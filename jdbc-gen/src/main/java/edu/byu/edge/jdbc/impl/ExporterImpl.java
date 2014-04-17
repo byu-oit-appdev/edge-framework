@@ -58,7 +58,7 @@ public class ExporterImpl implements Exporter {
 
 		OUT.println("Exporting " + tbl.getTableName() + " to " + className);
 
-		final Set<String> imps = new LinkedHashSet<String>(5, .9999f);
+		final Set<String> imps = new LinkedHashSet<String>();
 		final List<String[]> props = new LinkedList<String[]>();
 		final List<List<String[]>> constructors = new LinkedList<List<String[]>>();
 
@@ -80,7 +80,7 @@ public class ExporterImpl implements Exporter {
 			props.add(arr);
 		}
 
-		final HashMap<String, Object> map = new HashMap<String, Object>(8, .9999f);
+		final TreeMap<String, Object> map = new TreeMap<String, Object>();
 		map.put("package", pkgName);
 		map.put("imports", imps);
 		map.put("props", props);
@@ -186,7 +186,7 @@ public class ExporterImpl implements Exporter {
 	private static final Map<String, String> SET_NULL_MAP = createSetNullValueMap();
 
 	private static Map<String, String[]> createTypeMapping() {
-		final Map<String, String[]> map = new HashMap<String, String[]>(36, .9999f);
+		final Map<String, String[]> map = new TreeMap<String, String[]>();
 
 		map.put("bigint", TLONG);
 		map.put("binary", BYTEARR);
@@ -217,9 +217,11 @@ public class ExporterImpl implements Exporter {
 		map.put("text", STRING);
 		map.put("time", STRING);
 		map.put("timestamp", DATE);
+		map.put("timestamp(6)", DATE);
 		map.put("tinyblob", BYTEARR);
 		map.put("tinyint", TINT);
 		map.put("tinytext", STRING);
+		map.put("undefined", STRING);
 		map.put("varbinary", BYTEARR);
 		map.put("varchar", STRING);
 		map.put("varchar2", STRING);
@@ -228,7 +230,7 @@ public class ExporterImpl implements Exporter {
 	}
 
 	private static Map<String, String> createNullMap() {
-		final Map<String, String> map = new HashMap<String, String>(5, .9999f);
+		final Map<String, String> map = new TreeMap<String, String>();
 
 		map.put("int", "java.lang.Integer");
 		map.put("long", "java.lang.Long");
@@ -239,7 +241,7 @@ public class ExporterImpl implements Exporter {
 	}
 
 	private static Map<String, String[]> createImportMap() {
-		final Map<String, String[]> map = new HashMap<String, String[]>(12, .9999f);
+		final Map<String, String[]> map = new TreeMap<String, String[]>();
 
 		map.put("int", new String[]{null, "int"});
 		map.put("long", new String[]{null, "long"});
@@ -257,7 +259,7 @@ public class ExporterImpl implements Exporter {
 	}
 
 	private static Map<String, String> createResultSetMap() {
-		final Map<String, String> map = new HashMap<String, String>(13, .9999f);
+		final Map<String, String> map = new TreeMap<String, String>();
 
 		map.put("int", "getInt");
 		map.put("long", "getLong");
@@ -276,7 +278,7 @@ public class ExporterImpl implements Exporter {
 	}
 
 	private static Map<String, String> createSetNullValueMap() {
-		final Map<String, String> map = new HashMap<String, String>(8, .9999f);
+		final Map<String, String> map = new TreeMap<String, String>();
 
 		map.put("Integer", "null");
 		map.put("Long", "null");
