@@ -41,7 +41,9 @@ public class MySqlParser implements Parser {
 		paramMap.put("schema", schema);
 		if (tableNames == null || "*".equals(tableNames) || "".equals(tableNames)) {
 			return jdbc.query(
-					"select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA = :schema union select * from INFORMATION_SCHEMA.VIEWS where TABLE_SCHEMA = :schema ",
+					"select TABLE_SCHEMA, TABLE_NAME, AUTO_INCREMENT from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA = :schema " +
+							"union " +
+							"select TABLE_SCHEMA, TABLE_NAME, null from INFORMATION_SCHEMA.VIEWS where TABLE_SCHEMA = :schema ",
 					paramMap, tableRowMapper);
 		} else {
 			final String[] sa = tableNames.split(",");
@@ -51,9 +53,9 @@ public class MySqlParser implements Parser {
 			}
 			paramMap.put("tables", Arrays.asList(sa));
 			return jdbc.query(
-					"select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA = :schema and upper(TABLE_NAME) in (:tables) " +
+					"select TABLE_SCHEMA, TABLE_NAME, AUTO_INCREMENT from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA = :schema and upper(TABLE_NAME) in (:tables) " +
 							"union " +
-							"select * from INFORMATION_SCHEMA.VIEWS where TABLE_SCHEMA = :schema and upper(TABLE_NAME) in (:tables) ",
+							"select TABLE_SCHEMA, TABLE_NAME, null from INFORMATION_SCHEMA.VIEWS where TABLE_SCHEMA = :schema and upper(TABLE_NAME) in (:tables) ",
 					paramMap, tableRowMapper);
 		}
 	}

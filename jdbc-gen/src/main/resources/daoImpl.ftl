@@ -1,5 +1,5 @@
 [#ftl]
-[#if package?? && package != ""]package ${package}.da.jdbc;[/#if]
+[#if package?? && package != ""]package ${package}.[/#if]da.jdbc;
 
 import [#if package?? && package != ""]${package}.[/#if]da.${className}Dao;
 import [#if package?? && package != ""]${package}.[/#if]da.mapper.${className}Mapper;

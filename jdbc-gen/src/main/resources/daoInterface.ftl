@@ -1,5 +1,5 @@
 [#ftl]
-[#if package?? && package != ""]package ${package}.da;[/#if]
+[#if package?? && package != ""]package ${package}.[/#if]da;
 
 import [#if package?? && package != ""]${package}.[/#if]domain.${className};
 

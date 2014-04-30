@@ -1,5 +1,8 @@
 package edu.byu.edge.jdbc.impl;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import edu.byu.edge.jdbc.Exporter;
 import edu.byu.edge.jdbc.JdbcGen;
 import edu.byu.edge.jdbc.domain.Column;
@@ -34,7 +37,7 @@ public class ExporterImpl implements Exporter {
 	}
 
 	@Override
-	public void export(final List<Table> tables, final String baseFolder, final String pkgName) {
+	public void export(final List<Table> tables, final String baseFolder, final String pkgName, final String schema) {
 		OUT.println("Exporting tables to " + baseFolder + "...");
 
 		final File root = createFolder(null, baseFolder);
@@ -57,6 +60,26 @@ public class ExporterImpl implements Exporter {
 				OUT.println("Error generating class for " + t.getTableName() + ". " + e.getMessage());
 			}
 		}
+
+		try {
+			exportSpringConfig(root, pkgName, schema, tables);
+		} catch (final Exception e) {
+			OUT.println("Error generating spring configuration for " + schema + ". " + e.getMessage());
+		}
+	}
+
+	private void exportSpringConfig(final File path, final String pkgName, final String schema, final List<Table> tables) throws IOException {
+		final Map<String, Object> map = new TreeMap<String, Object>();
+		final String okSchema = cleanupSchema(schema);
+		final String nameSchema = lowerFirstLetter(okSchema);
+		map.put("datasource", nameSchema + "DataSource");
+		map.put("jdbcName", nameSchema + "JdbcTemplate");
+		map.put("package", pkgName);
+		map.put("poolName", nameSchema + "Pool");
+		map.put("txAdvice", nameSchema + "TxAdvice01");
+		map.put("txManager", nameSchema + "TransactionManager");
+		map.put("daos", new ArrayList<String[]>(Collections2.transform(tables, new TableToBean())));
+		doExport(path, nameSchema + "-jdbc-context.xml", "springcontext.ftl", map);
 	}
 
 	private void exportBaseDaoImpl(final File path, final String pkgName) throws IOException {
@@ -66,38 +89,20 @@ public class ExporterImpl implements Exporter {
 	}
 
 	private void exportTable(final File[] paths, final String pkgName, final Table tbl) throws IOException {
-		final String className = createClassName(tbl.getTableName());
+		final String className = camelCaseName(tbl.getTableName());
 
 		OUT.println("Exporting " + tbl.getTableName() + " to " + className);
 
-		final Set<String> imps = new LinkedHashSet<String>();
-		final List<String[]> props = new LinkedList<String[]>();
-		final List<List<String[]>> constructors = new LinkedList<List<String[]>>();
-
-		final List<Column> columns = tbl.getColumns();
-		Collections.sort(columns, ColumnComparator.INSTANCE);
-		for (final Column c : columns) {
-			final String colType = determineColumnType(c);
-			OUT.println("\t" + colType + " <- " + c.getDataType() + " " + c.getColType());
-			final String[] inf = IMPORT_MAP.get(colType);
-			if (inf[0] != null) imps.add(inf[0]);
-			final String cn = determineColumnName(c.getColumnName());
-			final String[] arr = new String[6];
-			arr[0] = inf[1];
-			arr[1] = cn.substring(0, 1).toLowerCase() + cn.substring(1);
-			arr[2] = cn;
-			arr[3] = RESULT_SET_MAP.get(arr[0]);
-			arr[4] = c.getNullable() && SET_NULL_MAP.containsKey(arr[0]) ? SET_NULL_MAP.get(arr[0]) : null;
-			arr[5] = c.getColumnName();
-			props.add(arr);
-		}
+		Collections.sort(tbl.getColumns(), ColumnComparator.INSTANCE);
+		final Set<String> imps = new TreeSet<String>(Collections2.filter(Collections2.transform(tbl.getColumns(), COLUMN_TO_IMPORT), IMPORT_FILTER));
+		final List<String[]> props = new ArrayList<String[]>(Collections2.transform(tbl.getColumns(), COLUMN_TO_PROPERTY));
 
 		final TreeMap<String, Object> map = new TreeMap<String, Object>();
 		map.put("package", pkgName);
 		map.put("imports", imps);
 		map.put("props", props);
 		map.put("className", className);
-		map.put("classRefName", className.substring(0, 1).toLowerCase() + className.substring(1));
+		map.put("classRefName", lowerFirstLetter(className));
 
 		doExport(paths[1], className + ".java", "jdbcDomain.ftl", map);
 		doExport(paths[4], className + "Mapper.java", "rowMapper.ftl", map);
@@ -149,26 +154,15 @@ public class ExporterImpl implements Exporter {
 		return nullable ? NULL_MAP.get(type[1]) : type[1];
 	}
 
-	private static String determineColumnName(final String base) {
+	private static String camelCaseName(final String base) {
 		if (base == null || "".equals(base)) return "";
 		final String[] parts = base.split(DB_IDENT_SEP);
 		final StringBuilder sb = new StringBuilder(base.length());
 		for (final String p : parts) {
 			sb.append(p.substring(0, 1).toUpperCase());
-			sb.append(p.substring(1).toLowerCase());
+			if (p.length() > 1)
+				sb.append(p.substring(1).toLowerCase());
 		}
-		return sb.toString();
-	}
-
-	private static String createClassName(final String base) {
-		if (base == null || "".equals(base)) return "";
-		final String[] parts = base.split(DB_IDENT_SEP);
-		final StringBuilder sb = new StringBuilder(base.length());
-		for (final String p : parts) {
-			sb.append(p.substring(0, 1).toUpperCase());
-			sb.append(p.substring(1).toLowerCase());
-		}
-		if (sb.charAt(sb.length() - 1) == 's') sb.deleteCharAt(sb.length() - 1);
 		return sb.toString();
 	}
 
@@ -178,6 +172,20 @@ public class ExporterImpl implements Exporter {
 		if (! dir.exists() && ! dir.mkdirs()) throw new IllegalArgumentException("Unable to create base folder: " + dir);
 		return dir;
 	}
+
+	private static String cleanupSchema(final String base) {
+		return lowerFirstLetter(camelCaseName(base));
+	}
+
+	private static String lowerFirstLetter(final String s) {
+		if (s == null || "".equals(s)) return "";
+		if (s.length() == 1) return s.toLowerCase();
+		return s.substring(0, 1).toLowerCase() + s.substring(1);
+	}
+
+	private static final Predicate<String> IMPORT_FILTER = new ImportFilter();
+	private static final Function<Column, String> COLUMN_TO_IMPORT = new ColumnToImport();
+	private static final Function<Column, String[]> COLUMN_TO_PROPERTY = new ColumnToProperty();
 
 	private static final String DB_IDENT_SEP = "[_\\.\\/&\\s]+";
 
@@ -302,5 +310,44 @@ public class ExporterImpl implements Exporter {
 		map.put("byte[]", "new byte[0]");
 
 		return Collections.unmodifiableMap(map);
+	}
+
+	private static class TableToBean implements Function<Table, String[]> {
+		@Override
+		public String[] apply(final Table input) {
+			final String s = camelCaseName(input.getTableName());
+			return new String[]{lowerFirstLetter(s), s};
+		}
+	}
+
+	private static class ColumnToImport implements Function<Column, String> {
+		@Override
+		public String apply(final Column input) {
+			return IMPORT_MAP.get(determineColumnType(input))[0];
+		}
+	}
+
+	private static class ImportFilter implements Predicate<String> {
+		@Override
+		public boolean apply(final String input) {
+			return input != null;
+		}
+	}
+
+	private static class ColumnToProperty implements Function<Column, String[]> {
+		@Override
+		public String[] apply(final Column c) {
+			final String colType = determineColumnType(c);
+			OUT.println("\t" + colType + " <- " + c.getDataType() + " " + c.getColType());
+			final String cn = camelCaseName(c.getColumnName());
+			final String[] arr = new String[6];
+			arr[0] = IMPORT_MAP.get(colType)[1];
+			arr[1] = lowerFirstLetter(cn);
+			arr[2] = cn;
+			arr[3] = RESULT_SET_MAP.get(arr[0]);
+			arr[4] = c.getNullable() && SET_NULL_MAP.containsKey(arr[0]) ? SET_NULL_MAP.get(arr[0]) : null;
+			arr[5] = c.getColumnName();
+			return arr;
+		}
 	}
 }

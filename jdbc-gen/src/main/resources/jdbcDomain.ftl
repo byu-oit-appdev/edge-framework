@@ -1,5 +1,5 @@
 [#ftl]
-[#if package?? && package != ""]package ${package}.domain;[/#if]
+[#if package?? && package != ""]package ${package}.[/#if]domain;
 
 [#list imports as imp]
 import ${imp};

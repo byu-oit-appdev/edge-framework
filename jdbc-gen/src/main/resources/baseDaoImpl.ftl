@@ -1,5 +1,5 @@
 [#ftl]
-[#if package?? && package != ""]package ${package}.da.jdbc;[/#if]
+[#if package?? && package != ""]package ${package}.[/#if]da.jdbc;
 
 import java.util.Map;
 import java.util.TreeMap;

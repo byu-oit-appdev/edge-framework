@@ -18,6 +18,7 @@ public interface Exporter {
 	 * @param tables the tables
 	 * @param baseFolder the base output folder
 	 * @param pkgName the java package name
+	 * @param schema the database schema
 	 */
-	public void export(List<Table> tables, String baseFolder, String pkgName);
+	public void export(List<Table> tables, String baseFolder, String pkgName, String schema);
 }

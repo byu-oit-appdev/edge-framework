@@ -67,7 +67,7 @@ public class JdbcGen {
 			OUT.println("You must enter a package. The default package is not allowed.");
 			return;
 		}
-		e.export(tables, path, pkg);
+		e.export(tables, path, pkg, schema);
 		OUT.println();
 	}
 

@@ -1,5 +1,5 @@
 [#ftl]
-[#if package?? && package != ""]package ${package}.da.mapper;[/#if]
+[#if package?? && package != ""]package ${package}.[/#if]da.mapper;
 
 import [#if package?? && package != ""]${package}.[/#if]domain.${className};
 import edu.byu.edge.jdbc.*;
