@@ -53,7 +53,7 @@
 		  p:acquireIncrement="2" p:acquireRetryDelayInMs="2500" />
 
 	<bean id="${jdbcName}" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate"
-		  p:dataSource-ref="${datasource}" />
+		  c:dataSource-ref="${datasource}" />
 
 	<bean id="${txManager}" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
 		  p:dataSource-ref="${datasource}" />
