@@ -31,7 +31,6 @@
 			<tx:method name="update*" read-only="false" isolation="DEFAULT" propagation="REQUIRED" />
 			<tx:method name="find*"   read-only="true"  isolation="DEFAULT" propagation="REQUIRES_NEW" />
 			<tx:method name="get*"    read-only="true"  isolation="DEFAULT" propagation="REQUIRES_NEW" />
-			<tx:method name="*"       read-only="true"  isolation="DEFAULT" propagation="REQUIRES_NEW" />
 		</tx:attributes>
 	</tx:advice>
 

@@ -27,7 +27,7 @@ public class ${className}DaoImpl extends BaseDaoImpl implements ${className}Dao 
 
 	@Autowired
 	public ${className}DaoImpl(
-			@Qualifier("<jdbcTemplateName>") NamedParameterJdbcTemplate jdbc,
+			@Qualifier("${jdbcName}") NamedParameterJdbcTemplate jdbc,
 			@Qualifier("${classRefName}Mapper") ${className}Mapper mapper
 	) {
 		this.jdbc = jdbc;
@@ -36,5 +36,18 @@ public class ${className}DaoImpl extends BaseDaoImpl implements ${className}Dao 
 		this.listExtractor = mapper.LIST_EXTRACTOR;
 	}
 
+	@Override
+	public String schemaName() {
+		return SCHEMA_NAME;
+	}
+
+	@Override
+	public String tableName() {
+		return TABLE_NAME;
+	}
+
+	private static final String SCHEMA_NAME = "${table.schema}";
+	private static final String TABLE_NAME = "${table.tableName}";
+	private static final String FQ_NAME = SCHEMA_NAME + '.' + TABLE_NAME;
 
 }

@@ -48,7 +48,7 @@ public class ExporterImpl implements Exporter {
 		final File daimpl = createFolder(da, "jdbc");
 
 		try {
-			exportBaseDaoImpl(daimpl, pkgName);
+			exportBaseDao(da, daimpl, pkgName);
 		} catch (final Exception e) {
 			OUT.println("Error generating BaseDaoImpl. " + e.getMessage());
 		}
@@ -82,10 +82,11 @@ public class ExporterImpl implements Exporter {
 		doExport(path, nameSchema + "-jdbc-context.xml", "springcontext.ftl", map);
 	}
 
-	private void exportBaseDaoImpl(final File path, final String pkgName) throws IOException {
+	private void exportBaseDao(final File da,  final File daImpl, final String pkgName) throws IOException {
 		final Map<String, Object> map = new TreeMap<String, Object>();
 		map.put("package", pkgName);
-		doExport(path, "BaseDaoImpl.java", "baseDaoImpl.ftl", map);
+		doExport(da, "BaseDao.java", "baseDao.ftl", map);
+		doExport(daImpl, "BaseDaoImpl.java", "baseDaoImpl.ftl", map);
 	}
 
 	private void exportTable(final File[] paths, final String pkgName, final Table tbl) throws IOException {
@@ -103,7 +104,8 @@ public class ExporterImpl implements Exporter {
 		map.put("props", props);
 		map.put("className", className);
 		map.put("classRefName", lowerFirstLetter(className));
-
+		map.put("jdbcName", lowerFirstLetter(cleanupSchema(tbl.getSchema())) + "JdbcTemplate");
+		map.put("table", tbl);
 		doExport(paths[1], className + ".java", "jdbcDomain.ftl", map);
 		doExport(paths[4], className + "Mapper.java", "rowMapper.ftl", map);
 		doExport(paths[2], className + "Dao.java", "daoInterface.ftl", map);

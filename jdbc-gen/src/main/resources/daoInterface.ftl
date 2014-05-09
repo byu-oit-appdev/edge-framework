@@ -6,6 +6,6 @@ import [#if package?? && package != ""]${package}.[/#if]domain.${className};
 /**
   *
   */
-public interface ${className}Dao {
+public interface ${className}Dao extends BaseDao {
 
 }
