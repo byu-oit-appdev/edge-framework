@@ -27,5 +27,6 @@
 		<module>query-tools</module>
 		<module>dummy-rest</module>
 		<module>dummy-web</module>
+		<module>personMerge</module>
 	</modules>
 </project>
