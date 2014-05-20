@@ -26,6 +26,11 @@
 
 	<bean id="personMergeMapper" class="edu.byu.pro.merge.da.mapper.PersonMergeMapper" />
 
+	<bean id="defaultMergeReportGenerator" class="edu.byu.merge.bl.impl.DefaultMergeReportGenerator"
+			c:mergePartGenerator-ref="defaultMergePartGenerator" />
+
+	<bean id="defaultMergePartGenerator" class="edu.byu.merge.bl.impl.DefaultMergePartGenerator" />
+
 	<tx:advice id="proTxAdvice01" transaction-manager="cesTxManager">
 		<tx:attributes>
 			<tx:method name="find*"   read-only="true"  isolation="DEFAULT" propagation="REQUIRES_NEW" />

@@ -73,7 +73,7 @@ public class MergeControllerImpl implements MergeController, InitializingBean {
 			} catch (final Exception ignore) {
 			}
 		}
-		if (emailReport) {
+		if (emailReport && resultList.size() > 0) {
 			sendResultEmail(reportGenerator.apply(resultList));
 		}
 		for (final PersonMerge m : Maps.filterEntries(resultList, new ErrorFreeMergesFilter()).keySet()) {
