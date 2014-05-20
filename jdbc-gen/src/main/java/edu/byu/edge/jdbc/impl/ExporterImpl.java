@@ -58,6 +58,11 @@ public class ExporterImpl implements Exporter {
 				exportTable(new File[]{base, domain, da, daimpl, mapper}, pkgName, t);
 			} catch (final Exception e) {
 				OUT.println("Error generating class for " + t.getTableName() + ". " + e.getMessage());
+				try {
+					Thread.sleep(1000);
+				} catch (Exception ex) {
+				}
+				e.printStackTrace(System.err);
 			}
 		}
 
@@ -265,6 +270,7 @@ public class ExporterImpl implements Exporter {
 	private static Map<String, String[]> createImportMap() {
 		final Map<String, String[]> map = new TreeMap<String, String[]>();
 
+		map.put("byte[]", new String[]{null, "byte[]"});
 		map.put("int", new String[]{null, "int"});
 		map.put("long", new String[]{null, "long"});
 		map.put("boolean", new String[]{null, "boolean"});
@@ -276,6 +282,7 @@ public class ExporterImpl implements Exporter {
 		map.put("java.lang.String", new String[]{null, "String"});
 		map.put("java.util.Date", new String[]{"java.util.Date", "Date"});
 		map.put("java.math.BigDecimal", new String[]{"java.math.BigDecimal", "BigDecimal"});
+		map.put("java.math.BigInt", new String[]{"java.math.BigInt", "BigInt"});
 
 		return Collections.unmodifiableMap(map);
 	}
@@ -294,6 +301,7 @@ public class ExporterImpl implements Exporter {
 		map.put("String", "getString");
 		map.put("Date", "getTimestamp");
 		map.put("BigDecimal", "getBigDecimal");
+		map.put("BigInt", "getBigInt");
 		map.put("byte[]", "getBytes");
 
 		return Collections.unmodifiableMap(map);
@@ -309,6 +317,7 @@ public class ExporterImpl implements Exporter {
 		map.put("String", "\"\"");
 		map.put("Date", "null");
 		map.put("BigDecimal", "null");
+		map.put("BigInt", "null");
 		map.put("byte[]", "new byte[0]");
 
 		return Collections.unmodifiableMap(map);
@@ -325,7 +334,8 @@ public class ExporterImpl implements Exporter {
 	private static class ColumnToImport implements Function<Column, String> {
 		@Override
 		public String apply(final Column input) {
-			return IMPORT_MAP.get(determineColumnType(input))[0];
+			final String key = determineColumnType(input);
+			return IMPORT_MAP.get(key)[0];
 		}
 	}
 
