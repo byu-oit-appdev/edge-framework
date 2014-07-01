@@ -1,7 +1,7 @@
 [#ftl]
 [#if package?? && package != ""]package ${package}.[/#if]da.jdbc;
 
-import [#if package?? && package != ""]package ${package}.[/#if]da.BaseDao;
+import [#if package?? && package != ""] ${package}.[/#if]da.BaseDao;
 
 import java.util.Map;
 import java.util.TreeMap;

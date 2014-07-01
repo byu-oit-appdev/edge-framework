@@ -15,12 +15,20 @@
 		"
 		default-lazy-init="true">
 
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		p:defaultAutoCommit="true" p:defaultReadOnly="true"
-		p:initialSize="1" p:maxActive="2" p:maxIdle="1"
-		p:testOnBorrow="true" p:testOnReturn="true" p:testWhileIdle="true"
-		p:removeAbandoned="true"
-		p:url="${jdbcUrl}" p:username="${user}" p:password="${password}" p:driverClassName="${driverName}"/>
+	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource"
+			destroy-method="close"
+			p:driverClass="${driverName}" p:jdbcUrl="${jdbcUrl}"
+			p:username="${user}" p:password="${password}"
+			p:idleConnectionTestPeriodInSeconds="0" p:idleMaxAgeInSeconds="30"
+			p:closeConnectionWatch="false"
+			p:connectionTestStatement="select 1 from dual"
+			p:connectionTimeoutInMs="7500"
+			p:poolName="rmsDS"
+			p:serviceOrder="FIFO"
+			p:partitionCount="2"
+			p:minConnectionsPerPartition="2"
+			p:maxConnectionsPerPartition="16"
+			p:acquireIncrement="2" p:acquireRetryDelayInMs="2500" />
 
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate"
 			c:dataSource-ref="dataSource" />
