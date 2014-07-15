@@ -28,5 +28,6 @@
 		<module>dummy-rest</module>
 		<module>dummy-web</module>
 		<module>personMerge</module>
+		<module>byu-auth-filters</module>
 	</modules>
 </project>
