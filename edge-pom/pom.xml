@@ -5,7 +5,7 @@
 	<artifactId>edge-pom</artifactId>
 	<packaging>pom</packaging>
 	<name>edge framework POM</name>
-	<version>1.4</version>
+	<version>1.5</version>
 
 	<parent>
 		<groupId>edu.byu</groupId>
@@ -38,7 +38,7 @@
 		<commons-pool.version>1.6</commons-pool.version>
 		<data-access.version>1.0.0.0</data-access.version>
 		<dom4j.version>1.6.1</dom4j.version>
-		<edge-jdbc-da.version>1.2.0</edge-jdbc-da.version>
+		<edge-jdbc-da.version>1.3.0</edge-jdbc-da.version>
 		<edge-querytools.version>1.0.0</edge-querytools.version>
 		<edge-util.version>1.0.1</edge-util.version>
 		<ehcache-compat.version>2.5.7</ehcache-compat.version>
@@ -49,8 +49,8 @@
 		<framework.decorator.version>1.5.1.2</framework.decorator.version>
 		<framework.security.version>1.2.0.0-RC4</framework.security.version>
 		<framework.web.version>1.5.1.2</framework.web.version>
-		<guava.version>16.0.1</guava.version>
-		<hashUtil.version>1.0.0</hashUtil.version>
+		<guava.version>18.0</guava.version>
+		<hashUtil.version>1.0.1</hashUtil.version>
 		<hibernate.version>3.6.10.Final</hibernate.version>
 		<!--<hibernate.version>4.1.0</hibernate.version>-->
 		<hsqldb.version>2.2.8</hsqldb.version>
@@ -69,7 +69,7 @@
 		<lmax-disruptor.version>3.2.0</lmax-disruptor.version>
 		<log4j.version>1.2.17</log4j.version>
 		<!-- Please be aware that log4j 2 as the destination requires different config and you probably need to include the log4j 1.x api bridge -->
-		<log4j2.version>2.0-beta9</log4j2.version>
+		<log4j2.version>2.0.2</log4j2.version>
 		<log4j-extras.version>1.2.17</log4j-extras.version>
 		<mysql-connector-java.version>5.1.28</mysql-connector-java.version>
 		<oracle.version>11.2.0.3.0</oracle.version>
@@ -79,13 +79,15 @@
 		<servlet.jsp.version>2.1</servlet.jsp.version>
 		<servlet.jstl.version>1.1.2</servlet.jstl.version>
 		<simpleauth.version>1.0.1</simpleauth.version>
-		<slf4j.version>1.7.5</slf4j.version>
+		<slf4j.version>1.7.7</slf4j.version>
 		<!--<spring.version>3.0.7.RELEASE</spring.version>-->
-		<spring.version>3.1.4.RELEASE</spring.version>
-		<!--<spring.version>3.2.4.RELEASE</spring.version>-->
+		<!--<spring.version>3.1.4.RELEASE</spring.version>-->
+		<spring.version>3.2.10.RELEASE</spring.version>
+		<!--<spring.version>4.0.6.RELEASE</spring.version>-->
 		<!--<spring.security.version>2.0.8.RELEASE</spring.security.version>-->
 		<!--<spring.security.version>3.0.8.RELEASE</spring.security.version>-->
-		<spring.security.version>3.1.4.RELEASE</spring.security.version>
+		<spring.security.version>3.1.7.RELEASE</spring.security.version>
+		<!--<spring.security.version>3.2.5.RELEASE</spring.security.version>-->
 		<stax.version>1.0.1</stax.version>
 		<stax-impl.version>1.2.0</stax-impl.version>
 		<ws-authentication.version>1.0.0.1</ws-authentication.version>
@@ -905,6 +907,29 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+	<profiles>
+		<profile>
+			<id>jdk67</id>
+			<activation><activeByDefault>false</activeByDefault></activation>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<artifactId>maven-compiler-plugin</artifactId>
+							<configuration>
+								<compilerArguments>
+									<!--as the java 6 classpath differs based on each installation and platform,
+									this property must be set in the user's settings.xml file (${user.home}/.m2/settings.xml)-->
+									<bootclasspath>${JAVA6_BOOT}</bootclasspath>
+								</compilerArguments>
+							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>
 
 	<build>
 		<pluginManagement>
