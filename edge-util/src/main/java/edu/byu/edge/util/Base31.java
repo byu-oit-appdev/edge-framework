@@ -1,8 +1,6 @@
 package edu.byu.edge.util;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Author: Wyatt Taylor (wyatt_taylor@byu.edu)
@@ -13,45 +11,24 @@ import java.util.Map;
  */
 public class Base31 {
 
-	private static final char[] CHARS = "0123456789ABCDEFGHJKLMNPRTUVWXY".toCharArray();
-//	private static final long[] BOUNDS;
-
-
+	private static final String STR = "0123456789ABCDEFGHJKLMNPRTUVWXY";
+	private static final char[] CHARS = STR.toCharArray();
+	private static final Pattern VALID = Pattern.compile("^[" + STR + "]+$");
 	private static final int NUM = CHARS.length;
 	private static final long[] BASE;
 
-	private static final Map<Character, Integer> REV;
-
 	static {
-		REV = new HashMap<Character, Integer>(32, .999999f);
-		for (int i = 0; i < NUM; i++) {
-			REV.put(CHARS[i], i);
-		}
 		BASE = new long[13];
 		BASE[0] = 1;
 		for (int i = 1; i < 13; i++) {
 			BASE[i] = BASE[i - 1] * NUM;
 		}
-//		BOUNDS = new long[1 + (int) (Math.log(Long.MAX_VALUE) / Math.log(NUM))];
-//		for (int i = 0; i < BOUNDS.length - 1; i++) {
-//			BOUNDS[i] = (long) Math.pow(NUM, i);
-//		}
-//		BOUNDS[12] = Long.MAX_VALUE;
 	}
 
 
 	public static String encode(final long raw) {
 		if (raw < 0) throw new IllegalArgumentException("Number must be positive.");
 		if (raw < NUM) return String.valueOf(CHARS[((int) raw)]);
-//		final int a = Arrays.binarySearch(BOUNDS, raw);
-//		final int b = a < 0 ? -a : a + 1;
-//		final char[] c = new char[b];
-//		long x = raw;
-//		for (int i = 0; i < b; i++) {
-//			c[i] = CHARS[((int) (x % NUM))];
-//			x = x / NUM;
-//		}
-//		return new String(c);
 		long x = raw;
 		final StringBuilder sb = new StringBuilder(16);
 		while (x > 0) {
@@ -62,18 +39,26 @@ public class Base31 {
 	}
 
 	public static long decode(final String enc) {
-		final char[] ca = enc.toUpperCase().toCharArray();
+		return _doDecode(enc.toUpperCase());
+	}
+
+	private static long _doDecode(final String s) {
+		final char[] ca = s.toCharArray();
 		final int x = ca.length - 1;
 		long r = 0;
 		for (int i = 0; i < ca.length; i++) {
 			final char k = ca[x - i];
-			if (!REV.containsKey(k)) throw new IllegalArgumentException("Unknown character (" + k + ") at position " + i + ".");
-			r += BASE[i] * REV.get(k);
-//			final int p = Arrays.binarySearch(CHARS, ca[i]);
-//			if (p < 0) throw new IllegalArgumentException("Unknown character (" + ca[i] + ") at position " + i + ".");
-//			r += Math.pow(NUM, i) * p;
+			final int p = 'A' <= k && k <= 'H' ? k - 55 : ('0' <= k && k <= '9' ? k - 48 : ('J' <= k && k <= 'N' ? k - 56 : ('P' == k ? k - 57 : ('R' == k ? k - 58 : k - 59))));
+			r += BASE[i] * p;
 		}
 		return r;
+	}
+
+	public static long safeDecode(final String enc) {
+		if (enc == null || enc.isEmpty()) throw new IllegalArgumentException("No valid encoded number provided.");
+		final String s = enc.toUpperCase();
+		if (!VALID.matcher(s).matches()) throw new IllegalArgumentException("Invalid encoded number (" + s + "). Valid characters are " + STR + ".");
+		return _doDecode(s);
 	}
 
 	private Base31() {}
