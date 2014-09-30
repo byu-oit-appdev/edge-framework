@@ -15,8 +15,8 @@ import org.junit.runners.JUnit4;
  * @since 10/10/2013
  */
 @RunWith(JUnit4.class)
-public class StringUtilsUnitTest {
-	private static final Logger LOG = Logger.getLogger(StringUtilsUnitTest.class);
+public class StringUtilsTest {
+	private static final Logger LOG = Logger.getLogger(StringUtilsTest.class);
 
 	@Test
 	public void testPadLeft1() {

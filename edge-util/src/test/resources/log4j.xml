@@ -36,6 +36,14 @@
 		<priority value="INFO"/>
 	</category>
 
+	<category name="edu.byu.edge.test">
+		<priority value="DEBUG"/>
+	</category>
+
+	<category name="edu.byu.edge.util">
+		<priority value="DEBUG"/>
+	</category>
+
 	<category name="com">
 		<priority value="WARN"/>
 	</category>
