@@ -1,6 +1,9 @@
 package edu.byu.edge.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Contains utilities to manipulate strings.
@@ -62,5 +65,43 @@ public class StringUtils {
 	 */
 	public static String nullSafeString(final String s) {
 		return s == null ? "" : s;
+	}
+
+	private static final ThreadLocal<SimpleDateFormat> DATE_FORMAT_WITH_MILLIS = new DateFormatThreadLocal("yyyy-MM-dd-HH-mm-ss-S");
+
+	private static final ThreadLocal<SimpleDateFormat> DATE_FORMAT_NO_MILLIS = new DateFormatThreadLocal("yyyy-MM-dd-HH-mm-ss");
+
+	private static SimpleDateFormat getDateFormatForThread(final boolean includeMillis) {
+		return includeMillis ? DATE_FORMAT_WITH_MILLIS.get() : DATE_FORMAT_NO_MILLIS.get();
+	}
+
+	/**
+	 * Returns the current time as a formatted String (yyyy-MM-dd-HH-mm-ss)
+	 *
+	 * @return The date string.
+	 */
+	public static String getNowAsFormattedDate(final boolean includeMillis) {
+		return getDateFormatForThread(includeMillis).format(new Date());
+	}
+	/**
+	 * Returns the current time as a formatted String (yyyy-MM-dd-HH-mm-ss)
+	 *
+	 * @return The date string.
+	 */
+	public static String getNowAsFormattedDate(final boolean includeMillis, final int suffix, final int padded) {
+		return getDateFormatForThread(includeMillis).format(new Date()) + '-' + padLeft(String.valueOf(suffix), '0', padded);
+	}
+
+	private static class DateFormatThreadLocal extends ThreadLocal<SimpleDateFormat> {
+		private final String format;
+
+		private DateFormatThreadLocal(final String format) {
+			this.format = format;
+		}
+
+		@Override
+		protected SimpleDateFormat initialValue() {
+			return new SimpleDateFormat(format);
+		}
 	}
 }
