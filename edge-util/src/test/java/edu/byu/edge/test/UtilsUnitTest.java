@@ -14,7 +14,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 		Base31Test.class,
 		Base62Test.class,
-		StringUtilsTest.class
+		StringUtilsTest.class,
+		FileWatcherTest.class
 })
 public class UtilsUnitTest {
 }
