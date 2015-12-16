@@ -7,9 +7,9 @@
 		<!--<Arg>-->
 			<!--<New class="org.apache.commons.dbcp.BasicDataSource">-->
 				<!--<Set name="driverClassName">oracle.jdbc.OracleDriver</Set>-->
-				<!--<Set name="url">jdbc:oracle:thin:@ldap://oidhost:389/byustg1,cn=OracleContext,dc=byu,dc=edu</Set>-->
-				<!--<Set name="username">username</Set>-->
-				<!--<Set name="password">password</Set>-->
+				<!--<Set name="url">jdbc:oracle:thin:@ldap://oid3.byu.edu:389/byustg1,cn=OracleContext,dc=byu,dc=edu</Set>-->
+				<!--<Set name="username">javaprd</Set>-->
+				<!--<Set name="password">**removed**</Set>-->
 				<!--<Set name="maxActive">-1</Set>-->
 				<!--<Set name="initialSize">5</Set>-->
 			<!--</New>-->
@@ -21,9 +21,9 @@
 		<!--<Arg>-->
 			<!--<New class="org.apache.commons.dbcp.BasicDataSource">-->
 				<!--<Set name="driverClassName">oracle.jdbc.OracleDriver</Set>-->
-				<!--<Set name="url">jdbc:oracle:thin:@ldap://oidhost:389/cescpy1,cn=OracleContext,dc=byu,dc=edu</Set>-->
-				<!--<Set name="username">username</Set>-->
-				<!--<Set name="password">password</Set>-->
+				<!--<Set name="url">jdbc:oracle:thin:@ldap://oid3.byu.edu:389/cescpy1,cn=OracleContext,dc=byu,dc=edu</Set>-->
+				<!--<Set name="username">javaprd</Set>-->
+				<!--<Set name="password">**removed**</Set>-->
 				<!--<Set name="maxActive">-1</Set>-->
 				<!--<Set name="initialSize">5</Set>-->
 			<!--</New>-->
