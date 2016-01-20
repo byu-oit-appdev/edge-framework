@@ -50,6 +50,7 @@ public class HeaderAuthenticationFilter extends AbstractAuthenticationProcessing
 	@Override
 	public void afterPropertiesSet() {
 		if (iddao == null) throw new IllegalStateException("An IdentityDetailsDao is required for this filter.");
+		super.afterPropertiesSet();
 	}
 
 	@Override
