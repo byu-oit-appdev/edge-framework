@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>nonce-auth</artifactId>
+	<version>1.0.0</version>
+
+	<parent>
+		<artifactId>edge-pom</artifactId>
+		<groupId>edu.byu.edge.framework</groupId>
+		<version>1.5</version>
+		<relativePath>../edge-pom/pom.xml</relativePath>
+	</parent>
+
+	<properties>
+		<edge-util.version>1.3.0</edge-util.version>
+		<spring.security.version>3.0.8.RELEASE</spring.security.version>
+		<ws-simple-auth.version>1.0.1</ws-simple-auth.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>edu.byu.edge.framework</groupId>
+			<artifactId>edge-util</artifactId>
+			<version>${edge-util.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>edu.byu.edge.framework</groupId>
+			<artifactId>ws-simple-auth-filter</artifactId>
+			<version>${ws-simple-auth.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+</project>
