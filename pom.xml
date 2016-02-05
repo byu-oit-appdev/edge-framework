@@ -30,5 +30,6 @@
 		<module>personMerge</module>
 		<module>byu-auth-filters</module>
 		<module>combined-ws-security</module>
+		<module>nonce-auth</module>
 	</modules>
 </project>
