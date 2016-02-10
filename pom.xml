@@ -29,7 +29,7 @@
 		<module>dummy-web</module>
 		<module>personMerge</module>
 		<module>byu-auth-filters</module>
-		<module>combined-ws-security</module>
+		<!--<module>combined-ws-security</module>-->
 		<module>nonce-auth</module>
 	</modules>
 </project>
