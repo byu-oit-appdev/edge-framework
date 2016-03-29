@@ -31,5 +31,6 @@
 		<module>byu-auth-filters</module>
 		<!--<module>combined-ws-security</module>-->
 		<module>nonce-auth</module>
+		<module>spring-property-helper</module>
 	</modules>
 </project>
