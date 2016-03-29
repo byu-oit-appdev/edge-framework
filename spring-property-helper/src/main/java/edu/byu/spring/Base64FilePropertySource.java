@@ -4,9 +4,12 @@ import edu.byu.hash.Base64;
 import org.apache.log4j.Logger;
 import org.springframework.core.env.PropertySource;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.Properties;
+import java.util.zip.GZIPInputStream;
 
 /**
  * Created by wct5 on 3/23/16.
@@ -28,7 +31,7 @@ public class Base64FilePropertySource extends PropertySource<Properties> {
 		super(name, new Properties());
 		this.properties = super.source;
 		try {
-			this.properties.load(new StringReader(Base64.decodeToString(nss(System.getenv(envKey)))));
+			this.properties.load(new InputStreamReader(new GZIPInputStream(new ByteArrayInputStream(Base64.decodeToBytes(nss(System.getenv(envKey)))))));
 		} catch (IOException e) {
 			LOG.error("Unable to load");
 		}
@@ -45,6 +48,6 @@ public class Base64FilePropertySource extends PropertySource<Properties> {
 	}
 
 	private static String nss(final String s) {
-		return s == null ? "" : s;
+		return s == null ? "H4sIANMJ81YAAwMAAAAAAAAAAAA" : s;
 	}
 }
