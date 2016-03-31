@@ -5,7 +5,7 @@
 	<artifactId>edge-pom</artifactId>
 	<packaging>pom</packaging>
 	<name>edge framework POM</name>
-	<version>1.5</version>
+	<version>1.6-SNAPSHOT</version>
 
 	<parent>
 		<groupId>edu.byu</groupId>
@@ -18,29 +18,34 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<activation.version>1.1</activation.version>
-		<apache.http.core.version>4.3</apache.http.core.version>
-		<apache.http.version>4.3.1</apache.http.version>
+		<apache.http.core.version>4.4.4</apache.http.core.version>
+		<apache.http.version>4.5.2</apache.http.version>
 		<aspectj.version>1.6.12</aspectj.version>
 		<bcprov.version>1.46</bcprov.version>
 		<bonecp.version>0.8.0.RELEASE</bonecp.version>
+		<bootstrap.version>3.3.5</bootstrap.version>
 		<byuSecureDriver.version>2.0.0</byuSecureDriver.version>
 		<byuSecurity.version>1.2.0.0</byuSecurity.version>
 		<byuSpringUtil.version>1.1.0</byuSpringUtil.version>
 		<callObject.version>1.2.2</callObject.version>
+		<cas-client-core.version>3.4.1</cas-client-core.version>
 		<cglib.version>2.2.2</cglib.version>
-		<commons-codec.version>1.8</commons-codec.version>
+		<commons-codec.version>1.10</commons-codec.version>
 		<commons-collections.version>3.2.1</commons-collections.version>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
+		<commons-fileupload.version>1.3.1</commons-fileupload.version>
 		<commons-httpclient.version>3.1</commons-httpclient.version>
 		<commons-io.version>2.4</commons-io.version>
 		<commons-lang.version>2.6</commons-lang.version>
 		<commons-lang3.version>3.1</commons-lang3.version>
 		<commons-pool.version>1.6</commons-pool.version>
+		<core-identity-client.version>1.1.0</core-identity-client.version>
+		<credential-client.version>1.2.0</credential-client.version>
 		<data-access.version>1.0.0.0</data-access.version>
 		<dom4j.version>1.6.1</dom4j.version>
 		<edge-jdbc-da.version>1.3.0</edge-jdbc-da.version>
 		<edge-querytools.version>1.0.0</edge-querytools.version>
-		<edge-util.version>1.0.1</edge-util.version>
+		<edge-util.version>1.3.0</edge-util.version>
 		<ehcache-compat.version>2.5.7</ehcache-compat.version>
 		<ehcache-latest.version>2.6.8</ehcache-latest.version>
 		<ehcache-full.version>2.7.4</ehcache-full.version>
@@ -50,46 +55,56 @@
 		<framework.security.version>1.2.0.0-RC4</framework.security.version>
 		<framework.web.version>1.5.1.2</framework.web.version>
 		<guava.version>18.0</guava.version>
-		<hashUtil.version>1.0.1</hashUtil.version>
+		<hashUtil.version>1.1.0</hashUtil.version>
 		<hibernate.version>3.6.10.Final</hibernate.version>
 		<!--<hibernate.version>4.1.0</hibernate.version>-->
 		<hsqldb.version>2.2.8</hsqldb.version>
 		<!--<jackson.version>1.8.3</jackson.version>-->
 		<jackson.version>1.9.13</jackson.version>
+		<jackson2.version>2.6.0</jackson2.version>
 		<javamail.version>1.4.7</javamail.version>
 		<!--<javamail.version>1.5.1</javamail.version>-->
 		<jaxb-api.version>2.2.7</jaxb-api.version>
 		<jaxb-impl.version>2.2.7</jaxb-impl.version>
 		<jaxrs.version>1.1.1</jaxrs.version>
 		<!--<jersey.version>1.1.5.2</jersey.version>-->
-		<jersey.version>1.18</jersey.version>
+		<jersey.version>1.19</jersey.version>
 		<joda-time.version>2.1</joda-time.version>
 		<jta.version>1.1</jta.version>
 		<junit.version>4.11</junit.version>
-		<lmax-disruptor.version>3.2.0</lmax-disruptor.version>
+		<lmax-disruptor.version>3.3.4</lmax-disruptor.version>
 		<log4j.version>1.2.17</log4j.version>
 		<!-- Please be aware that log4j 2 as the destination requires different config and you probably need to include the log4j 1.x api bridge -->
-		<log4j2.version>2.0.2</log4j2.version>
+		<log4j2.version>2.5</log4j2.version>
 		<log4j-extras.version>1.2.17</log4j-extras.version>
-		<mysql-connector-java.version>5.1.28</mysql-connector-java.version>
+		<mockito.version>1.10.19</mockito.version>
+		<mysql-connector-java.version>5.1.38</mysql-connector-java.version>
+		<opensaml.version>2.6.4</opensaml.version>
+		<opensaml-openws.version>1.5.4</opensaml-openws.version>
+		<opensaml-xmltooling.version>1.4.4</opensaml-xmltooling.version>
 		<oracle.version>11.2.0.3.0</oracle.version>
 		<saaj-api.version>1.3.5</saaj-api.version>
 		<scala.version>2.10.3</scala.version>
 		<servlet.api.version>2.5</servlet.api.version>
 		<servlet.jsp.version>2.1</servlet.jsp.version>
-		<servlet.jstl.version>1.1.2</servlet.jstl.version>
+		<servlet.jstl.version>1.2</servlet.jstl.version>
 		<simpleauth.version>1.0.1</simpleauth.version>
 		<slf4j.version>1.7.7</slf4j.version>
 		<!--<spring.version>3.0.7.RELEASE</spring.version>-->
 		<!--<spring.version>3.1.4.RELEASE</spring.version>-->
-		<spring.version>3.2.10.RELEASE</spring.version>
-		<!--<spring.version>4.0.6.RELEASE</spring.version>-->
+		<spring.version>3.2.16.RELEASE</spring.version>
+		<!--<spring.version>4.0.9.RELEASE</spring.version>-->
+		<!--<spring.version>4.1.9.RELEASE</spring.version>-->
+		<!--<spring.version>4.2.5.RELEASE</spring.version>-->
 		<!--<spring.security.version>2.0.8.RELEASE</spring.security.version>-->
 		<!--<spring.security.version>3.0.8.RELEASE</spring.security.version>-->
-		<spring.security.version>3.1.7.RELEASE</spring.security.version>
-		<!--<spring.security.version>3.2.5.RELEASE</spring.security.version>-->
+		<!--<spring.security.version>3.1.7.RELEASE</spring.security.version>-->
+		<spring.security.version>3.2.9.RELEASE</spring.security.version>
+		<!--<spring.security.version>4.0.4.RELEASE</spring.security.version>-->
+		<spring-property-helper.version>1.0.0</spring-property-helper.version>
 		<stax.version>1.0.1</stax.version>
 		<stax-impl.version>1.2.0</stax-impl.version>
+		<tablesorter.version>2.22.1</tablesorter.version>
 		<ws-authentication.version>1.0.0.1</ws-authentication.version>
 	</properties>
 
@@ -136,6 +151,16 @@
 				<artifactId>ws-simple-auth-filter</artifactId>
 				<version>${simpleauth.version}</version>
 				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>edu.byu.edge.wsClient</groupId>
+				<artifactId>core-identity-client</artifactId>
+				<version>${core-identity-client.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>edu.byu.edge.wsClient</groupId>
+				<artifactId>credential-client</artifactId>
+				<version>${credential-client.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>edu.byu.jdbc</groupId>
@@ -294,6 +319,16 @@
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${jackson2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson2.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
 				<version>${guava.version}</version>
@@ -352,6 +387,11 @@
 						<artifactId>httpclient</artifactId>
 					</exclusion>
 				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.jersey.contribs</groupId>
+				<artifactId>jersey-multipart</artifactId>
+				<version>${jersey.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.sun.jersey.contribs</groupId>
@@ -414,6 +454,17 @@
 				</exclusions>
 			</dependency>
 			<dependency>
+				<groupId>commons-fileupload</groupId>
+				<artifactId>commons-fileupload</artifactId>
+				<version>${commons-fileupload.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-io</groupId>
+						<artifactId>commons-io</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
 				<groupId>commons-httpclient</groupId>
 				<artifactId>commons-httpclient</artifactId>
 				<version>${commons-httpclient.version}</version>
@@ -466,6 +517,12 @@
 				<artifactId>jstl</artifactId>
 				<version>${servlet.jstl.version}</version>
 				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>${servlet.api.version}</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>javax.servlet</groupId>
@@ -594,7 +651,7 @@
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpcore</artifactId>
-				<version>${apache.http.version}</version>
+				<version>${apache.http.core.version}</version>
 				<scope>runtime</scope>
 				<exclusions>
 					<exclusion>
@@ -606,7 +663,7 @@
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpcore-nio</artifactId>
-				<version>${apache.http.version}</version>
+				<version>${apache.http.core.version}</version>
 				<scope>runtime</scope>
 				<exclusions>
 					<exclusion>
@@ -716,6 +773,46 @@
 				<artifactId>hsqldb</artifactId>
 				<version>${hsqldb.version}</version>
 				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.jasig.cas.client</groupId>
+				<artifactId>cas-client-core</artifactId>
+				<version>${cas-client-core.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>${mockito.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.opensaml</groupId>
+				<artifactId>opensaml</artifactId>
+				<version>${opensaml.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.opensaml</groupId>
+				<artifactId>openws</artifactId>
+				<version>${opensaml-openws.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.opensaml</groupId>
+				<artifactId>xmltooling</artifactId>
+				<version>${opensaml-xmltooling.version}</version>
+				<scope>runtime</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>jul-to-slf4j</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>log4j-over-slf4j</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.scala-lang</groupId>
@@ -904,6 +1001,16 @@
 				<artifactId>standard</artifactId>
 				<version>${servlet.jstl.version}</version>
 				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.webjars</groupId>
+				<artifactId>bootstrap</artifactId>
+				<version>${bootstrap.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.webjars.npm</groupId>
+				<artifactId>tablesorter</artifactId>
+				<version>${tablesorter.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
