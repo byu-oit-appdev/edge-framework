@@ -148,6 +148,12 @@
 			</dependency>
 			<dependency>
 				<groupId>edu.byu.edge.framework</groupId>
+				<artifactId>spring-property-helper</artifactId>
+				<version>${spring-property-helper.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>edu.byu.edge.framework</groupId>
 				<artifactId>ws-simple-auth-filter</artifactId>
 				<version>${simpleauth.version}</version>
 				<scope>runtime</scope>
@@ -747,6 +753,12 @@
 			<dependency>
 				<groupId>org.codehaus.jackson</groupId>
 				<artifactId>jackson-mapper-asl</artifactId>
+				<version>${jackson.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-jaxrs</artifactId>
 				<version>${jackson.version}</version>
 				<scope>runtime</scope>
 			</dependency>
