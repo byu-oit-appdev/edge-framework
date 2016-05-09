@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TreeMap;
 import java.util.List;
@@ -36,15 +37,15 @@ public class MySqlParser implements Parser {
 	}
 
 	@Override
-	public List<Table> getTables(final String schema, final String tableNames) {
+	public Schema getTables(final String schema, final String tableNames) {
 		final TreeMap<String, Object> paramMap = new TreeMap<String, Object>();
 		paramMap.put("schema", schema);
 		if (tableNames == null || "*".equals(tableNames) || "".equals(tableNames)) {
-			return jdbc.query(
+			return new Schema(schema, jdbc.query(
 					"select TABLE_SCHEMA, TABLE_NAME, AUTO_INCREMENT from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA = :schema " +
 							"union " +
 							"select TABLE_SCHEMA, TABLE_NAME, null from INFORMATION_SCHEMA.VIEWS where TABLE_SCHEMA = :schema ",
-					paramMap, tableRowMapper);
+					paramMap, tableRowMapper), getSequencesForSchema(schema));
 		} else {
 			final String[] sa = tableNames.split(",");
 			for (int i = 0; i < sa.length; i++) {
@@ -52,11 +53,11 @@ public class MySqlParser implements Parser {
 				sa[i] = sa[i].trim().toUpperCase();
 			}
 			paramMap.put("tables", Arrays.asList(sa));
-			return jdbc.query(
+			return new Schema(schema, jdbc.query(
 					"select TABLE_SCHEMA, TABLE_NAME, AUTO_INCREMENT from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA = :schema and upper(TABLE_NAME) in (:tables) " +
 							"union " +
 							"select TABLE_SCHEMA, TABLE_NAME, null from INFORMATION_SCHEMA.VIEWS where TABLE_SCHEMA = :schema and upper(TABLE_NAME) in (:tables) ",
-					paramMap, tableRowMapper);
+					paramMap, tableRowMapper), getSequencesForSchema(schema));
 		}
 	}
 
@@ -79,6 +80,15 @@ public class MySqlParser implements Parser {
 	@Override
 	public String getSchemaNameMessage() {
 		return "Please enter schema name. Please note that in MySQL, the schema name IS case-sensitive.";
+	}
+
+	@Override
+	public Table getIndexesForTable(final Table table) {
+		return table;
+	}
+
+	public List<Sequence> getSequencesForSchema(final String schema) {
+		return new ArrayList<>(0);
 	}
 
 	private static final class TableRowMapper implements RowMapper<Table> {

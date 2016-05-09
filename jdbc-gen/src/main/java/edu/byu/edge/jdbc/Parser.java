@@ -24,7 +24,7 @@ public interface Parser {
 	 * @param tableSet a comma-delimited list of table names to include. * or empty string means all
 	 * @return result
 	 */
-	public List<Table> getTables(String schema, String tableSet);
+	public Schema getTables(String schema, String tableSet);
 
 	/**
 	 *
@@ -39,4 +39,11 @@ public interface Parser {
 	 * @return same tables
 	 */
 	public List<Table> getColumnsForTables(List<Table> tables);
+
+	/**
+	 *
+	 * @param table
+	 * @return same table
+	 */
+	public Table getIndexesForTable(final Table table);
 }

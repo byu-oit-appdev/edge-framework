@@ -1,6 +1,7 @@
 package edu.byu.edge.jdbc;
 
 import edu.byu.edge.jdbc.domain.Column;
+import edu.byu.edge.jdbc.domain.Schema;
 import edu.byu.edge.jdbc.domain.Table;
 import edu.byu.edge.jdbc.impl.MySqlParser;
 import edu.byu.edge.jdbc.impl.OracleParser;
@@ -51,7 +52,8 @@ public class JdbcGen {
 		final String schema = getInput();
 		OUT.println("Please enter a comma-separated list of table names to output. A '*' or an empty line means all.");
 		final String tableSet = getInput();
-		final List<Table> tables = p.getTables(schema, tableSet);
+		final Schema schemaObj = p.getTables(schema, tableSet);
+		final List<Table> tables = schemaObj.getTables();
 		if (tables == null || tables.isEmpty()) {
 			OUT.println("No tables found.");
 			return;
@@ -67,7 +69,7 @@ public class JdbcGen {
 			OUT.println("You must enter a package. The default package is not allowed.");
 			return;
 		}
-		e.export(tables, path, pkg, schema);
+		e.export(schemaObj, path, pkg, schema);
 		OUT.println();
 	}
 

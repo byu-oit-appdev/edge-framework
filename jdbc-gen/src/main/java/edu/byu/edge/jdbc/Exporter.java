@@ -1,5 +1,6 @@
 package edu.byu.edge.jdbc;
 
+import edu.byu.edge.jdbc.domain.Schema;
 import edu.byu.edge.jdbc.domain.Table;
 
 import java.util.List;
@@ -15,10 +16,10 @@ public interface Exporter {
 
 	/**
 	 *
-	 * @param tables the tables
+	 * @param schema the schema
 	 * @param baseFolder the base output folder
 	 * @param pkgName the java package name
-	 * @param schema the database schema
+	 * @param schemaName the database schema
 	 */
-	public void export(List<Table> tables, String baseFolder, String pkgName, String schema);
+	public void export(Schema schema, String baseFolder, String pkgName, String schemaName);
 }
