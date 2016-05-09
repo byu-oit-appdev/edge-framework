@@ -12,6 +12,10 @@ import edu.byu.edge.jdbc.domain.Table;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -123,11 +127,11 @@ public class OracleParser implements Parser {
 		return "Please enter schema. By default, in Oracle, schema names are in all upper-case letters.";
 	}
 
-	private static final String SQL_IDX_COLS = "select I.COLUMN_NAME, I.COLUMN_POSITION " +
-			"from ALL_IND_COLUMNS I " +
-			"where I.TABLE_OWNER = :owner " +
-			"and I.TABLE_NAME = :tableName " +
-			"and I.INDEX_NAME = :indexName ";
+	private static final String SQL_IDX_COLS = "select ie.COLUMN_EXPRESSION as COLUMN_EXPRESSION, i.COLUMN_NAME, i.COLUMN_POSITION " +
+			"from DBA_IND_COLUMNS i left join DBA_IND_EXPRESSIONS ie on i.TABLE_OWNER = ie.TABLE_OWNER and i.TABLE_NAME = ie.TABLE_NAME and i.INDEX_NAME = ie.INDEX_NAME and i.COLUMN_POSITION = ie.COLUMN_POSITION " +
+			"where i.TABLE_OWNER = :owner " +
+			"and i.TABLE_NAME = :tableName " +
+			"and i.INDEX_NAME = :indexName ";
 
 	private static final String SQL_IDX_NAMES = "select i.INDEX_NAME, i.INDEX_TYPE, i.TABLE_OWNER, i.TABLE_NAME, c.CONSTRAINT_TYPE, i.UNIQUENESS " +
 			"from ALL_INDEXES i " +
@@ -227,7 +231,22 @@ public class OracleParser implements Parser {
 
 		@Override
 		public IndexColumn mapRow(final ResultSet rs, final int rowNum) throws SQLException {
-			return new IndexColumn(rs.getString("COLUMN_NAME"), rs.getInt("COLUMN_POSITION"));
+			final StringWriter out = new StringWriter(512);
+			final Reader expression = rs.getCharacterStream("COLUMN_EXPRESSION");
+			if (expression != null) {
+				final BufferedReader in = new BufferedReader(expression);
+				final char[] buf = new char[512];
+				int i = 0;
+				try {
+					while ((i = in.read(buf)) > 0) {
+						out.write(buf, 0, i);
+					}
+				} catch (IOException e) {
+					System.out.println("Error reading index expression.");
+					e.printStackTrace();
+				}
+			}
+			return new IndexColumn(rs.getString("COLUMN_NAME"), rs.getInt("COLUMN_POSITION"), out.toString());
 		}
 	}
 

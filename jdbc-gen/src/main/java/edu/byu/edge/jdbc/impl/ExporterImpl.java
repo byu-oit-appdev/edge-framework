@@ -128,7 +128,7 @@ public class ExporterImpl implements Exporter {
 				final List<IndexColumn> list = new ArrayList<>(table.getPrimaryKey().getColumnList());
 				Collections.sort(list);
 				for (final IndexColumn column : list) {
-					sb.append(column.getColumnName());
+					sb.append(decodeIdxColumn(column));
 					sb.append(",");
 				}
 				sb.deleteCharAt(sb.length() - 1);
@@ -157,7 +157,7 @@ public class ExporterImpl implements Exporter {
 				final List<IndexColumn> indexColumns = new ArrayList<>(index.getColumnList());
 				Collections.sort(indexColumns);
 				for (final IndexColumn column : indexColumns) {
-					ib.append(column.getColumnName());
+					ib.append(decodeIdxColumn(column));
 					ib.append(",");
 				}
 				ib.deleteCharAt(ib.length() - 1);
@@ -192,6 +192,14 @@ public class ExporterImpl implements Exporter {
 				out.print(" cycle");
 			}
 			out.println(";");
+		}
+	}
+
+	private String decodeIdxColumn(final IndexColumn column) {
+		if (column.getColumnExpression() != null && !"".equals(column.getColumnExpression())) {
+			return column.getColumnExpression();
+		} else {
+			return column.getColumnName();
 		}
 	}
 

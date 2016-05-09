@@ -6,13 +6,15 @@ package edu.byu.edge.jdbc.domain;
 public class IndexColumn implements Comparable<IndexColumn> {
 	protected String columnName;
 	protected int columnPosition;
+	protected String columnExpression;
 
 	public IndexColumn() {
 	}
 
-	public IndexColumn(final String columnName, final int columnPosition) {
+	public IndexColumn(final String columnName, final int columnPosition, final String columnExpression) {
 		this.columnName = columnName;
 		this.columnPosition = columnPosition;
+		this.columnExpression = columnExpression;
 	}
 
 	public String getColumnName() {
@@ -29,6 +31,14 @@ public class IndexColumn implements Comparable<IndexColumn> {
 
 	public void setColumnPosition(final int columnPosition) {
 		this.columnPosition = columnPosition;
+	}
+
+	public String getColumnExpression() {
+		return columnExpression;
+	}
+
+	public void setColumnExpression(final String columnExpression) {
+		this.columnExpression = columnExpression;
 	}
 
 	@Override
