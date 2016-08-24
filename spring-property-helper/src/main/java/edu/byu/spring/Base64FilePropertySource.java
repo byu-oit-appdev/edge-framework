@@ -1,13 +1,13 @@
 package edu.byu.spring;
 
 import edu.byu.hash.Base64;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.core.env.PropertySource;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.util.Properties;
 import java.util.zip.GZIPInputStream;
 
@@ -16,7 +16,7 @@ import java.util.zip.GZIPInputStream;
  */
 public class Base64FilePropertySource extends PropertySource<Properties> {
 
-	private static final Logger LOG = Logger.getLogger(Base64FilePropertySource.class);
+	private static final Logger LOG = LogManager.getLogger(Base64FilePropertySource.class);
 
 	private static final String DEFAULT_SOURCE_NAME = "base64filePropertySource";
 	private static final String DEFAULT_ENV_KEY = "APPLICATION_PROPERTIES";
@@ -33,7 +33,9 @@ public class Base64FilePropertySource extends PropertySource<Properties> {
 		try {
 			this.properties.load(new InputStreamReader(new GZIPInputStream(new ByteArrayInputStream(Base64.decodeToBytes(nss(System.getenv(envKey)))))));
 		} catch (IOException e) {
-			LOG.error("Unable to load");
+			LOG.error("Unable to load properties.", e);
+		} catch (NullPointerException e) {
+			LOG.warn("Unable to load properties.", e);
 		}
 	}
 

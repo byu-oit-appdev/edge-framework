@@ -32,5 +32,6 @@
 		<!--<module>combined-ws-security</module>-->
 		<module>nonce-auth</module>
 		<module>spring-property-helper</module>
+		<module>web-auth</module>
 	</modules>
 </project>

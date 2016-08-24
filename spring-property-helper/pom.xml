@@ -6,7 +6,7 @@
 
 	<groupId>edu.byu.edge.framework</groupId>
 	<artifactId>spring-property-helper</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 
 	<parent>
 		<artifactId>edge-pom</artifactId>
@@ -19,12 +19,13 @@
 		<dependency>
 			<groupId>edu.byu.util</groupId>
 			<artifactId>hashUtil</artifactId>
-			<version>1.0.1</version>
+			<version>1.1.0</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>${log4j2.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
