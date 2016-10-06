@@ -7,6 +7,7 @@ import edu.byu.security.filter.SoaRequestHeaderAuthenticationFilter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -79,6 +80,7 @@ public class ServiceBasedUserDetailsService implements UserDetailsService, Authe
 				}
 			} catch (Exception e) {
 				LOG.error("Error determining GRO membership: " + coreIdentity.getNetId() + ":" + groupid, e);
+				throw new AuthenticationServiceException("Error determining GRO membership: " + coreIdentity.getNetId() + ":" + groupid, e);
 			}
 		}
 		return new UserIdentity(coreIdentity, grantedAuthorities);
