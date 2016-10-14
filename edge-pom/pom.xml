@@ -19,7 +19,7 @@
 		<activation.version>1.1</activation.version>
 		<antlr.version>2.7.7</antlr.version>
 		<aopalliance.version>1.0</aopalliance.version>
-		<apache.http.core.version>4.5.2</apache.http.core.version>
+		<apache.http.core.version>4.4.5</apache.http.core.version>
 		<apache.http.version>4.5.2</apache.http.version>
 		<asm.version>2.2.3</asm.version>
 		<aspectj.version>1.6.12</aspectj.version>
@@ -1512,6 +1512,11 @@
 				<plugin>
 					<artifactId>maven-assembly-plugin</artifactId>
 					<version>2.6</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>2.17</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-clean-plugin</artifactId>
