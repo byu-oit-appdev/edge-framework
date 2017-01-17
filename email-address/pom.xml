@@ -15,6 +15,13 @@
 		<relativePath></relativePath>
 	</parent>
 
+	<properties>
+		<hikari.version>2.4.9</hikari.version>
+		<junit.version>4.12</junit.version>
+		<log4j2.version>2.6.2</log4j2.version>
+		<oracle.version>12.1.0.2</oracle.version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>edu.byu.edge.framework</groupId>
@@ -22,12 +29,46 @@
 			<version>${edge-jdbc-da.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		<!--<dependency>-->
-			<!--<groupId>org.apache.logging.log4j</groupId>-->
-			<!--<artifactId>log4j-api</artifactId>-->
-			<!--<version>${log4j2.version}</version>-->
-			<!--<scope>compile</scope>-->
-		<!--</dependency>-->
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc7</artifactId>
+			<version>${oracle.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP-java7</artifactId>
+			<version>${hikari.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>${log4j2.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${log4j2.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<version>${log4j2.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${slf4j.version}</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
@@ -45,9 +86,30 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.19.1</version>
+					<configuration>
+						<systemPropertyVariables>
+							<byu.logdir>${env.BYU_LOG_DIR}</byu.logdir>
+							<byu.log.dir>${env.BYU_LOG_DIR}</byu.log.dir>
+						</systemPropertyVariables>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 
 </project>
