@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>edu.byu.edge.framework</groupId>
 	<artifactId>jdbc-da</artifactId>
-	<version>1.3.1</version>
+	<version>1.3.1-java6</version>
 	<name>JDBC Data Access Framework Project</name>
 	<packaging>jar</packaging>
 	
@@ -55,8 +55,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
 		</plugins>
