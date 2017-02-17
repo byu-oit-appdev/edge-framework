@@ -5,92 +5,175 @@
 	<artifactId>edge-pom</artifactId>
 	<packaging>pom</packaging>
 	<name>edge framework POM</name>
-	<version>1.5</version>
+	<version>1.6-SNAPSHOT</version>
 
-	<parent>
-		<groupId>edu.byu</groupId>
-		<artifactId>byu-framework-pom</artifactId>
-		<version>1.0.3</version>
-		<relativePath></relativePath>
-	</parent>
+	<description>
+		This POM specifies pretty much all of what we need at BYU.
+		Framework versions, dependency management things.
+		There is even a section for plugin versions.
+	</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<activation.version>1.1</activation.version>
-		<apache.http.core.version>4.3</apache.http.core.version>
-		<apache.http.version>4.3.1</apache.http.version>
+		<antlr.version>2.7.7</antlr.version>
+		<aopalliance.version>1.0</aopalliance.version>
+		<apache.http.core.version>4.4.5</apache.http.core.version>
+		<apache.http.version>4.5.2</apache.http.version>
+		<asm.version>2.2.3</asm.version>
 		<aspectj.version>1.6.12</aspectj.version>
-		<bcprov.version>1.46</bcprov.version>
+		<!--<aspectj.version>1.7.4</aspectj.version>-->
+		<!--<aspectj.version>1.8.9</aspectj.version>-->
+		<bcprov.version>1.55</bcprov.version>
 		<bonecp.version>0.8.0.RELEASE</bonecp.version>
-		<byuSecureDriver.version>2.0.0</byuSecureDriver.version>
-		<byuSecurity.version>1.2.0.0</byuSecurity.version>
+		<bootstrap.version>3.3.5</bootstrap.version>
+		<byu.common-exception.version>1.0.0</byu.common-exception.version>
+		<byu-crypto.version>1.0.1</byu-crypto.version>
+		<byu-util.version>2.1.0</byu-util.version>
+		<byuAnnotations.version>1.0.1</byuAnnotations.version>
+		<byuSecurity.version>1.2.0.1</byuSecurity.version>
 		<byuSpringUtil.version>1.1.0</byuSpringUtil.version>
+		<byuProClient.version>1.0.1</byuProClient.version>
 		<callObject.version>1.2.2</callObject.version>
+		<cas-client-core.version>3.4.1</cas-client-core.version>
 		<cglib.version>2.2.2</cglib.version>
-		<commons-codec.version>1.8</commons-codec.version>
+		<commons-codec.version>1.10</commons-codec.version>
 		<commons-collections.version>3.2.1</commons-collections.version>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
+		<commons-fileupload.version>1.3.1</commons-fileupload.version>
 		<commons-httpclient.version>3.1</commons-httpclient.version>
 		<commons-io.version>2.4</commons-io.version>
 		<commons-lang.version>2.6</commons-lang.version>
-		<commons-lang3.version>3.1</commons-lang3.version>
+		<commons-lang3.version>3.4</commons-lang3.version>
 		<commons-pool.version>1.6</commons-pool.version>
+		<control-dates-client.version>1.0.6</control-dates-client.version>
+		<core-identity-client.version>1.1.0</core-identity-client.version>
+		<credential-client.version>1.2.0</credential-client.version>
+		<!--<cxf.version>2.2.12</cxf.version>-->
+		<cxf.version>3.1.7</cxf.version>
 		<data-access.version>1.0.0.0</data-access.version>
 		<dom4j.version>1.6.1</dom4j.version>
 		<edge-jdbc-da.version>1.3.0</edge-jdbc-da.version>
 		<edge-querytools.version>1.0.0</edge-querytools.version>
-		<edge-util.version>1.0.1</edge-util.version>
+		<edge-simple-auth.version>1.0.2-SNAPSHOT</edge-simple-auth.version>
+		<edge-util.version>1.3.0</edge-util.version>
+		<edge.person-basic.version>1.1.0-SNAPSHOT</edge.person-basic.version>
+		<edge.pro-client.version>1.1.1</edge.pro-client.version>
 		<ehcache-compat.version>2.5.7</ehcache-compat.version>
-		<ehcache-latest.version>2.6.8</ehcache-latest.version>
-		<ehcache-full.version>2.7.4</ehcache-full.version>
+		<ehcache-latest.version>2.6.11</ehcache-latest.version>
+		<ehcache-full.version>2.7.8</ehcache-full.version>
+		<!--<ehcache-full.version>2.8.8</ehcache-full.version>-->
+		<!--<ehcache-full.version>2.9.1</ehcache-full.version>-->
+		<!--<ehcache-full.version>2.10.2</ehcache-full.version>-->
+		<!--<ehcache3.version>3.0.3</ehcache3.version>-->
+		<ehcache3.version>3.1.2</ehcache3.version>
 		<ehcache.version>${ehcache-latest.version}</ehcache.version>
+		<enunciate.version>1.31</enunciate.version>
 		<fastinfoset.version>1.2.13</fastinfoset.version>
+		<framework-da.version>2.2.0</framework-da.version>
 		<framework.decorator.version>1.5.1.2</framework.decorator.version>
-		<framework.security.version>1.2.0.0-RC4</framework.security.version>
-		<framework.web.version>1.5.1.2</framework.web.version>
-		<guava.version>18.0</guava.version>
-		<hashUtil.version>1.0.1</hashUtil.version>
+		<framework-security.version>1.4.0-SNAPSHOT</framework-security.version>
+		<framework.security.version>1.2.0.1</framework.security.version>
+		<framework-swing.version>1.3.1</framework-swing.version>
+		<framework-test.version>1.2.1</framework-test.version>
+		<framework.web.version>1.5.2.0-M1</framework.web.version>
+		<!--<framework.web.version>1.5.1.2</framework.web.version>-->
+		<framework-wsci.version>1.3.1</framework-wsci.version>
+		<framework-ws.version>1.3.1-SNAPSHOT</framework-ws.version>
+		<guava.version>19.0</guava.version>
+		<!--<hamcrest-core.version>1.1</hamcrest-core.version>-->
+		<hamcrest-core.version>1.3</hamcrest-core.version>
+		<hashUtil.version>1.1.0</hashUtil.version>
 		<hibernate.version>3.6.10.Final</hibernate.version>
 		<!--<hibernate.version>4.1.0</hibernate.version>-->
-		<hsqldb.version>2.2.8</hsqldb.version>
+		<hikari.version>2.5.1</hikari.version>
+		<hsqldb.version>2.3.4</hsqldb.version>
 		<!--<jackson.version>1.8.3</jackson.version>-->
 		<jackson.version>1.9.13</jackson.version>
+		<jackson2.version>2.6.0</jackson2.version>
 		<javamail.version>1.4.7</javamail.version>
-		<!--<javamail.version>1.5.1</javamail.version>-->
-		<jaxb-api.version>2.2.7</jaxb-api.version>
-		<jaxb-impl.version>2.2.7</jaxb-impl.version>
+		<!--<javamail.version>1.5.6</javamail.version>-->
+		<javassist.version>3.12.1.GA</javassist.version>
+		<jaxb-api.version>2.2.11</jaxb-api.version>
+		<jaxb-impl.version>2.2.11</jaxb-impl.version>
+		<jaxb.xjc.version>2.2.11</jaxb.xjc.version>
 		<jaxrs.version>1.1.1</jaxrs.version>
+		<jaxws-rt.version>2.2.10</jaxws-rt.version>
+		<jdbc-da.version>1.3.0</jdbc-da.version>
 		<!--<jersey.version>1.1.5.2</jersey.version>-->
-		<jersey.version>1.18</jersey.version>
-		<joda-time.version>2.1</joda-time.version>
+		<jersey.version>1.19</jersey.version>
+		<jettison.version>1.3.8</jettison.version>
+		<joda-time.version>2.9.4</joda-time.version>
 		<jta.version>1.1</jta.version>
-		<junit.version>4.11</junit.version>
-		<lmax-disruptor.version>3.2.0</lmax-disruptor.version>
+		<junit.version>4.12</junit.version>
+		<lmax-disruptor.version>3.3.5</lmax-disruptor.version>
 		<log4j.version>1.2.17</log4j.version>
 		<!-- Please be aware that log4j 2 as the destination requires different config and you probably need to include the log4j 1.x api bridge -->
-		<log4j2.version>2.0.2</log4j2.version>
+		<log4j2.version>2.6.2</log4j2.version>
 		<log4j-extras.version>1.2.17</log4j-extras.version>
-		<mysql-connector-java.version>5.1.28</mysql-connector-java.version>
+		<mockito.version>1.10.19</mockito.version>
+		<mysql-connector-java.version>5.1.38</mysql-connector-java.version>
+		<nonce-auth.version>1.1.0</nonce-auth.version>
+		<!--<ojdbc14.version>10.2.0.2.0</ojdbc14.version>-->
+		<opensaml.version>2.6.4</opensaml.version>
+		<opensaml-openws.version>1.5.4</opensaml-openws.version>
+		<opensaml-xmltooling.version>1.4.4</opensaml-xmltooling.version>
 		<oracle.version>11.2.0.3.0</oracle.version>
+		<oracle7.version>12.1.0.2</oracle7.version>
+		<oracle8.version>12.1.0.2</oracle8.version>
+		<org.javassist.version>3.20.0-GA</org.javassist.version>
+		<!--<powermock.version>1.4.12</powermock.version>-->
+		<!--<powermock.version>1.5.6</powermock.version>-->
+		<powermock.version>1.6.5</powermock.version>
+		<query-tools.version>${edge-querytools.version}</query-tools.version>
 		<saaj-api.version>1.3.5</saaj-api.version>
+		<saaj-impl.version>1.3.25</saaj-impl.version>
 		<scala.version>2.10.3</scala.version>
-		<servlet.api.version>2.5</servlet.api.version>
-		<servlet.jsp.version>2.1</servlet.jsp.version>
-		<servlet.jstl.version>1.1.2</servlet.jstl.version>
+		<servlet2.api.version>2.5</servlet2.api.version>
+		<servlet3.api.version>3.0.1</servlet3.api.version>
+		<!--<servlet3.api.version>3.1.0</servlet3.api.version>-->
+		<servlet.jsp.version>2.1.2</servlet.jsp.version>
+		<!--<servlet.jsp.version>2.2</servlet.jsp.version>-->
+		<servlet.jstl.version>1.2</servlet.jstl.version>
 		<simpleauth.version>1.0.1</simpleauth.version>
-		<slf4j.version>1.7.7</slf4j.version>
+		<slf4j.version>1.7.21</slf4j.version>
 		<!--<spring.version>3.0.7.RELEASE</spring.version>-->
 		<!--<spring.version>3.1.4.RELEASE</spring.version>-->
-		<spring.version>3.2.10.RELEASE</spring.version>
-		<!--<spring.version>4.0.6.RELEASE</spring.version>-->
+		<!--<spring.version>3.2.17.RELEASE</spring.version>-->
+		<!--<spring.version>4.0.9.RELEASE</spring.version>-->
+		<!--<spring.version>4.1.9.RELEASE</spring.version>-->
+		<spring.version>4.2.8.RELEASE</spring.version>
+		<!--<spring.version>4.3.3.RELEASE</spring.version>-->
+		<!--<spring.ldap.core>1.3.2.RELEASE</spring.ldap.core>-->
+		<spring.ldap.core>2.1.0.RELEASE</spring.ldap.core>
+		<!--<spring.ldap.core>2.0.4.RELEASE</spring.ldap.core>-->
 		<!--<spring.security.version>2.0.8.RELEASE</spring.security.version>-->
 		<!--<spring.security.version>3.0.8.RELEASE</spring.security.version>-->
-		<spring.security.version>3.1.7.RELEASE</spring.security.version>
-		<!--<spring.security.version>3.2.5.RELEASE</spring.security.version>-->
+		<!--<spring.security.version>3.1.7.RELEASE</spring.security.version>-->
+		<spring.security.version>3.2.9.RELEASE</spring.security.version>
+		<!--<spring.security.version>4.0.4.RELEASE</spring.security.version>-->
+		<!--<spring.security.version>4.1.3.RELEASE</spring.security.version>-->
+		<spring-property-helper.version>1.0.0</spring-property-helper.version>
 		<stax.version>1.0.1</stax.version>
 		<stax-impl.version>1.2.0</stax-impl.version>
+		<tablesorter.version>2.22.1</tablesorter.version>
+		<velocity.version>1.7</velocity.version>
+		<woodstox-asl.version>3.2.9</woodstox-asl.version>
+		<!--<woodstox-asl.version>4.0.6</woodstox-asl.version>-->
 		<ws-authentication.version>1.0.0.1</ws-authentication.version>
+		<wsdl4j.version>1.6.3</wsdl4j.version>
+		<wss4j.version>1.5.9</wss4j.version>
+		<xalan.version>2.7.2</xalan.version>
+		<!--<xercesImpl.version>2.8.1</xercesImpl.version>-->
+		<xercesImpl.version>2.11.0</xercesImpl.version>
+		<xml-apis.version>1.4.01</xml-apis.version>
+		<!--<xml-apis.version>2.0.2</xml-apis.version>-->
+		<xml-resolver.version>1.2</xml-resolver.version>
+		<xmlsec.version>1.3.0</xmlsec.version>
+		<xmlsec.santuario.version>1.4.8</xmlsec.santuario.version>
+		<!--<xmlsec.santuario.version>1.5.8</xmlsec.santuario.version>-->
+		<!--<xmlsec.santuario.version>2.0.8</xmlsec.santuario.version>-->
 	</properties>
 
 	<dependencyManagement>
@@ -102,16 +185,84 @@
 				<scope>compile</scope>
 				<exclusions>
 					<exclusion>
+						<groupId>log4j</groupId>
+						<artifactId>log4j</artifactId>
+					</exclusion>
+					<exclusion>
 						<groupId>org.springframework</groupId>
 						<artifactId>spring</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
 			<dependency>
+				<groupId>edu.byu.cas</groupId>
+				<artifactId>casClient-rest</artifactId>
+				<version>${casClient-rest.version}</version>
+				<scope>compile</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>edu.byu.spring</groupId>
+						<artifactId>byuSpringUtil</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>javax.activation</groupId>
+						<artifactId>activation</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>junit</groupId>
+						<artifactId>junit</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>log4j</groupId>
+						<artifactId>log4j</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>edu.byu.commons-util</groupId>
+				<artifactId>common-exception</artifactId>
+				<version>${byu.common-exception.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
 				<groupId>edu.byu.da</groupId>
 				<artifactId>data-access-config</artifactId>
 				<version>${data-access.version}</version>
 				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>edu.byu.da</groupId>
+				<artifactId>framework-da</artifactId>
+				<version>${framework-da.version}</version>
+				<scope>runtime</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>log4j</groupId>
+						<artifactId>log4j</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>edu.byu.edge.client.controldates</groupId>
+				<artifactId>control-dates-client</artifactId>
+				<version>${control-dates-client.version}</version>
+				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>edu.byu.edge.framework</groupId>
@@ -127,21 +278,96 @@
 			</dependency>
 			<dependency>
 				<groupId>edu.byu.edge.framework</groupId>
+				<artifactId>nonce-auth</artifactId>
+				<version>${nonce-auth.version}</version>
+				<scope>runtime</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>log4j</groupId>
+						<artifactId>log4j</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>edu.byu.edge.framework</groupId>
 				<artifactId>query-tools</artifactId>
-				<version>${querytools.version}</version>
+				<version>${edge-querytools.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>edu.byu.edge.framework</groupId>
+				<artifactId>spring-property-helper</artifactId>
+				<version>${spring-property-helper.version}</version>
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>edu.byu.edge.framework</groupId>
 				<artifactId>ws-simple-auth-filter</artifactId>
-				<version>${simpleauth.version}</version>
-				<scope>runtime</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>log4j</groupId>
+						<artifactId>log4j</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-log4j12</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>edu.byu.edge.wsClient</groupId>
+				<artifactId>auth-client</artifactId>
+				<version>${edge.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>edu.byu.edge.wsClient</groupId>
+				<artifactId>core-identity-client</artifactId>
+				<version>${core-identity-client.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>log4j</groupId>
+						<artifactId>log4j</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>edu.byu.edge.wsClient</groupId>
+				<artifactId>credential-client</artifactId>
+				<version>${credential-client.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>edu.byu.edge.wsClient</groupId>
+				<artifactId>person-basic</artifactId>
+				<version>${edge.person-basic.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>edu.byu.edge.wsClient</groupId>
+				<artifactId>pro-client</artifactId>
+				<version>${edge.pro-client.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>edu.byu.ws</groupId>
+						<artifactId>authentication-core-da</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>net.sf.ehcache</groupId>
+						<artifactId>ehcache-core</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>edu.byu.jdbc</groupId>
 				<artifactId>byuSecureDriver</artifactId>
 				<version>${byuSecureDriver.version}</version>
 				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>edu.byu.security</groupId>
+				<artifactId>byu-crypto</artifactId>
+				<version>${byu-crypto.version}</version>
+				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>edu.byu.security</groupId>
@@ -225,14 +451,32 @@
 			</dependency>
 			<dependency>
 				<groupId>edu.byu.spring</groupId>
+				<artifactId>byuAnnotations</artifactId>
+				<version>${byuAnnotations.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>edu.byu.spring</groupId>
 				<artifactId>byuSpringUtil</artifactId>
 				<version>${byuSpringUtil.version}</version>
 				<scope>compile</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>log4j</groupId>
+						<artifactId>log4j</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>edu.byu.util</groupId>
 				<artifactId>hashUtil</artifactId>
 				<version>${hashUtil.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>edu.byu.util</groupId>
+				<artifactId>util</artifactId>
+				<version>${byu-util.version}</version>
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
@@ -288,10 +532,44 @@
 				</exclusions>
 			</dependency>
 			<dependency>
+				<groupId>antlr</groupId>
+				<artifactId>antlr</artifactId>
+				<version>${antlr.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>aopalliance</groupId>
+				<artifactId>aopalliance</artifactId>
+				<version>${aopalliance.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>asm</groupId>
+				<artifactId>asm</artifactId>
+				<version>${asm.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency><!-- note these are replaced by org.bouncycastle -->
+				<groupId>bouncycastle</groupId>
+				<artifactId>bcprov-jdk16</artifactId>
+				<version>140</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
 				<groupId>cglib</groupId>
 				<artifactId>cglib-nodep</artifactId>
 				<version>${cglib.version}</version>
 				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${jackson2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson2.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.guava</groupId>
@@ -355,6 +633,11 @@
 			</dependency>
 			<dependency>
 				<groupId>com.sun.jersey.contribs</groupId>
+				<artifactId>jersey-multipart</artifactId>
+				<version>${jersey.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.jersey.contribs</groupId>
 				<artifactId>jersey-spring</artifactId>
 				<version>${jersey.version}</version>
 				<scope>runtime</scope>
@@ -384,10 +667,43 @@
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
+				<groupId>com.sun.xml.bind</groupId>
+				<artifactId>jaxb-xjc</artifactId>
+				<version>${jaxb-impl.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
 				<groupId>com.sun.xml.fastinfoset</groupId>
 				<artifactId>FastInfoset</artifactId>
 				<version>${fastinfoset.version}</version>
 				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.xml.messaging.saaj</groupId>
+				<artifactId>saaj-impl</artifactId>
+				<version>${saaj-impl.version}</version>
+				<scope>runtime</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>javax.activation</groupId>
+						<artifactId>activation</artifactId>
+					</exclusion>
+					<!--<exclusion>-->
+					<!--<groupId>javax.xml.soap</groupId>-->
+					<!--<artifactId>javax.xml.soap-api</artifactId>-->
+					<!--</exclusion>-->
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.xml.ws</groupId>
+				<artifactId>jaxws-rt</artifactId>
+				<version>${jaxws-rt.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.zaxxer</groupId>
+				<artifactId>HikariCP</artifactId>
+				<version>${hikari.version}</version>
+				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>commons-codec</groupId>
@@ -414,6 +730,17 @@
 				</exclusions>
 			</dependency>
 			<dependency>
+				<groupId>commons-fileupload</groupId>
+				<artifactId>commons-fileupload</artifactId>
+				<version>${commons-fileupload.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-io</groupId>
+						<artifactId>commons-io</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency><!-- don't use this -->
 				<groupId>commons-httpclient</groupId>
 				<artifactId>commons-httpclient</artifactId>
 				<version>${commons-httpclient.version}</version>
@@ -450,6 +777,12 @@
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
+				<groupId>javassist</groupId>
+				<artifactId>javassist</artifactId>
+				<version>${javassist.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
 				<groupId>javax.activation</groupId>
 				<artifactId>activation</artifactId>
 				<version>${activation.version}</version>
@@ -469,8 +802,14 @@
 			</dependency>
 			<dependency>
 				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>${servlet3.api.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
 				<artifactId>servlet-api</artifactId>
-				<version>${servlet.api.version}</version>
+				<version>${servlet2.api.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -594,7 +933,7 @@
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpcore</artifactId>
-				<version>${apache.http.version}</version>
+				<version>${apache.http.core.version}</version>
 				<scope>runtime</scope>
 				<exclusions>
 					<exclusion>
@@ -606,7 +945,7 @@
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpcore-nio</artifactId>
-				<version>${apache.http.version}</version>
+				<version>${apache.http.core.version}</version>
 				<scope>runtime</scope>
 				<exclusions>
 					<exclusion>
@@ -663,6 +1002,17 @@
 				<version>${log4j2.version}</version>
 				<scope>runtime</scope>
 			</dependency>
+			<dependency><!-- * This should be used instead of xml-security.xmlsec -->
+				<groupId>org.apache.santuario</groupId>
+				<artifactId>xmlsec</artifactId>
+				<version>${xmlsec.santuario.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
 			<dependency>
 				<groupId>org.aspectj</groupId>
 				<artifactId>aspectjrt</artifactId>
@@ -677,9 +1027,27 @@
 			</dependency>
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
-				<artifactId>bcprov-jdk16</artifactId>
+				<artifactId>bcprov-jdk15on</artifactId>
 				<version>${bcprov.version}</version>
 				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.enunciate</groupId>
+				<artifactId>enunciate-rt</artifactId>
+				<version>${enunciate.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.enunciate</groupId>
+				<artifactId>enunciate-spring-app-rt</artifactId>
+				<version>${enunciate.version}</version>
+				<scope>runtime</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.codehaus.jackson</groupId>
@@ -695,9 +1063,38 @@
 			</dependency>
 			<dependency>
 				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-jaxrs</artifactId>
+				<version>${jackson.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
 				<artifactId>jackson-xc</artifactId>
 				<version>${jackson.version}</version>
 				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.jettison</groupId>
+				<artifactId>jettison</artifactId>
+				<version>${jettison.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.woodstox</groupId>
+				<artifactId>wstx-asl</artifactId>
+				<version>${woodstox-asl.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.ehcache</groupId>
+				<artifactId>ehcache</artifactId>
+				<version>${ehcache3.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hamcrest</groupId>
+				<artifactId>hamcrest-core</artifactId>
+				<version>${hamcrest-core.version}</version>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
@@ -709,12 +1106,96 @@
 						<groupId>commons-collections</groupId>
 						<artifactId>commons-collections</artifactId>
 					</exclusion>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>net.sf.ehcache</groupId>
+						<artifactId>ehcache</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-ehcache</artifactId>
+				<version>${hibernate.version}</version>
+				<scope>runtime</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>net.sf.ehcache</groupId>
+						<artifactId>ehcache</artifactId>
+					</exclusion>
 				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.hsqldb</groupId>
 				<artifactId>hsqldb</artifactId>
 				<version>${hsqldb.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.jasig.cas.client</groupId>
+				<artifactId>cas-client-core</artifactId>
+				<version>${cas-client-core.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.javassist</groupId>
+				<artifactId>javassist</artifactId>
+				<version>${org.javassist.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-all</artifactId>
+				<version>${mockito.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>${mockito.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.opensaml</groupId>
+				<artifactId>opensaml</artifactId>
+				<version>${opensaml.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.opensaml</groupId>
+				<artifactId>openws</artifactId>
+				<version>${opensaml-openws.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.opensaml</groupId>
+				<artifactId>xmltooling</artifactId>
+				<version>${opensaml-xmltooling.version}</version>
+				<scope>runtime</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>jul-to-slf4j</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>log4j-over-slf4j</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.powermock</groupId>
+				<artifactId>powermock-api-mockito</artifactId>
+				<version>${powermock.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.powermock</groupId>
+				<artifactId>powermock-module-junit4</artifactId>
+				<version>${powermock.version}</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
@@ -858,6 +1339,27 @@
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
+				<groupId>org.springframework.ldap</groupId>
+				<artifactId>spring-ldap-core</artifactId>
+				<version>${spring.ldap.core}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-acl</artifactId>
+				<version>${spring.security.version}</version>
+				<scope>runtime</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring-context</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring-core</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-cas</artifactId>
 				<version>${spring.security.version}</version>
@@ -880,6 +1382,44 @@
 				<artifactId>spring-security-core</artifactId>
 				<version>${spring.security.version}</version>
 				<scope>runtime</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.aspectj</groupId>
+						<artifactId>aspectjrt</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring-context</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring-core</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring-support</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-ldap</artifactId>
+				<version>${spring.security.version}</version>
+				<scope>compile</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.springframework.ldap</groupId>
+						<artifactId>spring-ldap-core</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.security</groupId>
@@ -894,6 +1434,16 @@
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
+				<groupId>org.webjars</groupId>
+				<artifactId>bootstrap</artifactId>
+				<version>${bootstrap.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.webjars.npm</groupId>
+				<artifactId>tablesorter</artifactId>
+				<version>${tablesorter.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>stax</groupId>
 				<artifactId>stax-api</artifactId>
 				<version>${stax.version}</version>
@@ -904,6 +1454,47 @@
 				<artifactId>standard</artifactId>
 				<version>${servlet.jstl.version}</version>
 				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>wsdl4j</groupId>
+				<artifactId>wsdl4j</artifactId>
+				<version>${wsdl4j.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>xalan</groupId>
+				<artifactId>xalan</artifactId>
+				<version>${xalan.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>xerces</groupId>
+				<artifactId>xercesImpl</artifactId>
+				<version>${xercesImpl.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>xml-apis</groupId>
+				<artifactId>xml-apis</artifactId>
+				<version>${xml-apis.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>xml-apis</groupId>
+				<artifactId>xml-apis-ext</artifactId>
+				<version>${xml-apis.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>xml-resolver</groupId>
+				<artifactId>xml-resolver</artifactId>
+				<version>${xml-resolver.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency><!-- * This should be excluded and org.apache.santuario.xmlsec used instead. -->
+				<groupId>xml-security</groupId>
+				<artifactId>xmlsec</artifactId>
+				<version>${xmlsec.version}</version>
+				<scope>compile</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -936,111 +1527,222 @@
 			<plugins>
 				<plugin>
 					<artifactId>maven-antrun-plugin</artifactId>
-					<version>1.7</version>
+					<version>1.8</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-assembly-plugin</artifactId>
-					<version>2.4</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-clean-plugin</artifactId>
-					<version>2.5</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.1</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-dependency-plugin</artifactId>
-					<version>2.8</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<version>2.8.1</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-ear-plugin</artifactId>
-					<version>2.8</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-ejb-plugin</artifactId>
-					<version>2.3</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-install-plugin</artifactId>
-					<version>2.5.1</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.4</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.9.1</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-plugin-plugin</artifactId>
-					<version>3.2</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-rar-plugin</artifactId>
-					<version>2.3</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>2.4.2</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-resources-plugin</artifactId>
 					<version>2.6</version>
 				</plugin>
 				<plugin>
-					<artifactId>maven-site-plugin</artifactId>
-					<version>3.3</version>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>2.17</version>
 				</plugin>
 				<plugin>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>2.2.1</version>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>3.0.0</version>
 				</plugin>
 				<plugin>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.16</version>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.5.1</version>
 				</plugin>
 				<plugin>
-					<artifactId>maven-war-plugin</artifactId>
-					<version>2.4</version>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>2.10</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.8.2</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-ear-plugin</artifactId>
+					<version>2.10.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-ejb-plugin</artifactId>
+					<version>2.5.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-install-plugin</artifactId>
+					<version>2.5.2</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>3.0.2</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.10.4</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-plugin-plugin</artifactId>
+					<version>3.4</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-pmd-plugin</artifactId>
+					<version>3.6</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-rar-plugin</artifactId>
+					<version>2.4</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>2.5.3</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-resources-plugin</artifactId>
 					<version>3.0.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>3.5.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>3.0.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.19.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>3.0.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.tomcat.maven</groupId>
 					<artifactId>tomcat6-maven-plugin</artifactId>
-					<version>2.1</version>
+					<version>2.2</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.tomcat.maven</groupId>
 					<artifactId>tomcat7-maven-plugin</artifactId>
-					<version>2.1</version>
+					<version>2.2</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>cobertura-maven-plugin</artifactId>
+					<version>2.7</version>
 				</plugin>
 				<plugin>
 					<groupId>org.mortbay.jetty</groupId>
 					<artifactId>jetty-maven-plugin</artifactId>
-					<version>8.1.14.v20131031</version>
+					<version>8.1.16.v20140903</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+					<configLocation>http://oitforge.byu.edu/conventions/checkstyle/byu-checkstyle-5-configuration.xml</configLocation>
+					<failsOnError>false</failsOnError>
+					<includeTestSourceDirectory>false</includeTestSourceDirectory>
+					<logViolationsToConsole>true</logViolationsToConsole>
+					<propertyExpansion>cacheFile=${project.build.outputDirectory}/checkstyle-cache</propertyExpansion>
+				</configuration>
+				<executions>
+					<execution>
+						<id>default</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<inherited>true</inherited>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 					<showDeprecation>true</showDeprecation>
 					<showWarnings>true</showWarnings>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>analyze-only</goal>
+						</goals>
+						<configuration>
+							<failOnWarning>false</failOnWarning>
+							<verbose>true</verbose>
+							<outputXML>true</outputXML>
+							<ignoreNonCompile>true</ignoreNonCompile>
+						</configuration>
+						<inherited>true</inherited>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<inherited>true</inherited>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<inherited>false</inherited>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<inherited>true</inherited>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+					<aggregate>true</aggregate>
+					<failOnViolation>false</failOnViolation>
+					<linkXRef>true</linkXRef>
+					<minimumTokens>100</minimumTokens>
+					<targetJdk>1.8</targetJdk>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+							<goal>cpd-check</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -1067,63 +1769,26 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
 				<executions>
 					<execution>
 						<goals>
-							<goal>jar</goal>
+							<goal>clean</goal>
 						</goals>
+						<phase>pre-site</phase>
 						<inherited>true</inherited>
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>analyze-only</goal>
-						</goals>
-						<configuration>
-							<failOnWarning>false</failOnWarning>
-							<verbose>true</verbose>
-							<outputXML>true</outputXML>
-							<ignoreNonCompile>true</ignoreNonCompile>
-						</configuration>
-						<inherited>true</inherited>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
-			</plugin>
-			<!--<plugin>-->
-				<!--<groupId>org.apache.maven.plugins</groupId>-->
-				<!--<artifactId>maven-pmd-plugin</artifactId>-->
-				<!--<configuration>-->
-					<!--<skip>true</skip>-->
-					<!--<targetJdk>1.6</targetJdk>-->
-					<!--<aggregate>true</aggregate>-->
-					<!--<minimumTokens>100</minimumTokens>-->
-					<!--<failOnViolation>false</failOnViolation>-->
-					<!--<linkXRef>true</linkXRef>-->
-				<!--</configuration>-->
-				<!--<executions>-->
-					<!--<execution>-->
-						<!--<goals>-->
-							<!--<goal>check</goal>-->
-							<!--<goal>cpd-check</goal>-->
-						<!--</goals>-->
-					<!--</execution>-->
-				<!--</executions>-->
-			<!--</plugin>-->
 		</plugins>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh</artifactId>
+				<version>2.10</version>
+			</extension>
+		</extensions>
 	</build>
 
 	<reporting>
@@ -1131,7 +1796,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.10</version>
+				<version>2.17</version>
 				<configuration>
 					<skip>true</skip>
 				</configuration>
@@ -1139,7 +1804,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>2.7</version>
+				<version>2.9</version>
 				<reportSets>
 					<reportSet>
 						<reports>
@@ -1162,18 +1827,18 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.9.1</version>
+				<version>2.10.4</version>
 				<configuration>
-					<show>private</show>
+					<detectJavaApiLink>true</detectJavaApiLink>
 					<doctitle>${project.name} API - ${project.version}</doctitle>
 					<linksource>true</linksource>
-					<detectJavaApiLink>true</detectJavaApiLink>
+					<show>private</show>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jxr-plugin</artifactId>
-				<version>2.3</version>
+				<version>2.5</version>
 				<configuration>
 					<aggregate>true</aggregate>
 					<linkJavadoc>true</linkJavadoc>
@@ -1182,16 +1847,16 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
-				<version>3.0.1</version>
+				<version>3.6</version>
 				<configuration>
-					<targetJdk>1.6</targetJdk>
+					<targetJdk>1.8</targetJdk>
 					<format>xml</format>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-report-plugin</artifactId>
-				<version>2.16</version>
+				<version>2.19.1</version>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -1210,7 +1875,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.6</version>
+				<version>2.7</version>
 				<configuration>
 					<formats>
 						<format>xml</format>
@@ -1241,12 +1906,12 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.8</version>
+				<version>2.10</version>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>2.5.2</version>
+				<version>3.0.4</version>
 				<configuration>
 					<effort>Max</effort>
 					<findbugsXmlOutput>true</findbugsXmlOutput>
@@ -1259,4 +1924,40 @@
 
 	<repositories>
 	</repositories>
+
+	<organization>
+		<name>Brigham Young University - Office of Information Technology</name>
+		<url>https://it.byu.edu/</url>
+	</organization>
+
+	<issueManagement>
+		<system>JIRA</system>
+		<url>https://byuoit.atlassian.net/secure/Dashboard.jspa</url>
+	</issueManagement>
+
+	<distributionManagement>
+		<repository>
+			<id>byu-release-repo</id>
+			<name>BYU Release Repository, Deployment Definition</name>
+			<url>https://developer.byu.edu/maven2/content/repositories/byu-release-repo</url>
+		</repository>
+		<snapshotRepository>
+			<id>byu-snapshot-repo</id>
+			<name>BYU Snapshot Repository, Deployment Definition</name>
+			<url>https://developer.byu.edu/maven2/content/repositories/byu-snapshot-repo</url>
+		</snapshotRepository>
+		<site>
+			<id>byu-site-deploy</id>
+			<name>BYU Site Deployment Location</name>
+			<url>scp://oitforge.byu.edu/data/repo/oitforge/site/maven/${project.groupId}/${project.artifactId}/${project.version}</url>
+		</site>
+	</distributionManagement>
+
+	<scm>
+		<connection>scm:git:https://github.com/byu-oit-appdev/edge-framework</connection>
+		<developerConnection>scm:svn:https://source.byu.edu/repo/maven/maven-byu-poms</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://developer.byu.edu/source/browse/Maven/maven-byu-poms</url>
+	</scm>
+
 </project>

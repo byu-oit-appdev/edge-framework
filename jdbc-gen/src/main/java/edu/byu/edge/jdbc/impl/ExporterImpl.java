@@ -7,12 +7,17 @@ import edu.byu.edge.jdbc.Exporter;
 import edu.byu.edge.jdbc.JdbcGen;
 import edu.byu.edge.jdbc.domain.Column;
 import edu.byu.edge.jdbc.domain.ColumnComparator;
+import edu.byu.edge.jdbc.domain.Index;
+import edu.byu.edge.jdbc.domain.IndexColumn;
+import edu.byu.edge.jdbc.domain.Schema;
+import edu.byu.edge.jdbc.domain.Sequence;
 import edu.byu.edge.jdbc.domain.Table;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -37,8 +42,10 @@ public class ExporterImpl implements Exporter {
 	}
 
 	@Override
-	public void export(final List<Table> tables, final String baseFolder, final String pkgName, final String schema) {
+	public void export(final Schema schema, final String baseFolder, final String pkgName, final String schemaName) {
 		OUT.println("Exporting tables to " + baseFolder + "...");
+
+		final List<Table> tables = schema.getTables();
 
 		final File root = createFolder(null, baseFolder);
 		final File base = createFolder(root, pkgName.replaceAll("\\.", "/"));
@@ -46,6 +53,12 @@ public class ExporterImpl implements Exporter {
 		final File da = createFolder(base, "da");
 		final File mapper = createFolder(da, "mapper");
 		final File daimpl = createFolder(da, "jdbc");
+
+		try {
+			exportHsql(root, schemaName, schema);
+		} catch (final Exception e) {
+			OUT.println("Error generating HSQL script. " + e.getMessage());
+		}
 
 		try {
 			exportBaseDao(da, daimpl, pkgName);
@@ -67,14 +80,131 @@ public class ExporterImpl implements Exporter {
 		}
 
 		try {
-			exportSpringConfig(root, pkgName, schema, tables);
+			exportSpringConfig(root, pkgName, schemaName, tables);
 		} catch (final Exception e) {
-			OUT.println("Error generating spring configuration for " + schema + ". " + e.getMessage());
+			OUT.println("Error generating spring configuration for " + schemaName + ". " + e.getMessage());
+		}
+	}
+
+	private void exportHsql(final File root, final String schemaName, final Schema schema) throws IOException {
+		final File fout = new File(root, "hsql-schema.sql");
+		fout.createNewFile();
+		final PrintStream out = new PrintStream(new FileOutputStream(fout));
+		out.println("SET DATABASE SQL SYNTAX ORA TRUE;");
+		out.println("CREATE SCHEMA " + schemaName + " AUTHORIZATION DBA;");
+		for (final Table table : schema.getTables()) {
+			final List<Column> columnList = new ArrayList<>(table.getColumns());
+			Collections.sort(columnList, ColumnComparator.INSTANCE);
+			final StringBuilder sb = new StringBuilder();
+			sb.append("create table ");
+			sb.append(schemaName);
+			sb.append(".");
+			sb.append(table.getTableName());
+			sb.append(" (\n");
+			for (final Column column : columnList) {
+				sb.append(column.getColumnName());
+				sb.append(" ");
+				sb.append(HSQL_MAP.containsKey(column.getColType().toLowerCase()) ? HSQL_MAP.get(column.getColType().toLowerCase()) : column.getColType().toLowerCase());
+				if (column.getMaxCharLength() > 0) {
+					sb.append("(");
+					sb.append(column.getMaxCharLength());
+					sb.append(")");
+				} else if (column.getNumPrec() > 0 || column.getNumScale() > 0) {
+					sb.append("(");
+					sb.append(column.getNumPrec());
+					sb.append(",");
+					sb.append(column.getNumScale());
+					sb.append(")");
+				}
+				if (!column.getNullable()) {
+					sb.append(" not null");
+				}
+				sb.append(",\n");
+			}
+			if (table.getPrimaryKey() != null) {
+				sb.append("constraint ");
+				sb.append(table.getPrimaryKey().getIndexName());
+				sb.append(" primary key (");
+				final List<IndexColumn> list = new ArrayList<>(table.getPrimaryKey().getColumnList());
+				Collections.sort(list);
+				for (final IndexColumn column : list) {
+					sb.append(decodeIdxColumn(column));
+					sb.append(",");
+				}
+				sb.deleteCharAt(sb.length() - 1);
+				sb.append(")");
+			} else {
+				sb.deleteCharAt(sb.length() - 1);
+			}
+			sb.append(");\n");
+			out.println(sb.toString());
+			for (final Index index : table.getIndexList()) {
+				if (index == table.getPrimaryKey()) continue;
+				final StringBuilder ib = new StringBuilder();
+				ib.append("create ");
+				if ("UNIQUE".equals(index.getUniqueness())) {
+					ib.append("unique ");
+				}
+				ib.append("index ");
+				ib.append(schemaName);
+				ib.append(".");
+				ib.append(index.getIndexName());
+				ib.append(" on ");
+				ib.append(table.getSchema());
+				ib.append(".");
+				ib.append(table.getTableName());
+				ib.append(" (");
+				final List<IndexColumn> indexColumns = new ArrayList<>(index.getColumnList());
+				Collections.sort(indexColumns);
+				for (final IndexColumn column : indexColumns) {
+					ib.append(decodeIdxColumn(column));
+					ib.append(",");
+				}
+				ib.deleteCharAt(ib.length() - 1);
+				ib.append(");");
+				out.println(ib.toString());
+			}
+			out.println();
+		}
+		for (final Sequence seq : schema.getSequences()) {
+			out.print("create sequence ");
+			out.print(seq.getSequenceOwner());
+			out.print(".");
+			out.print(seq.getSequenceName());
+			if (seq.getMinValue() != null) {
+				out.print(" minvalue ");
+				out.print(seq.getMinValue().toPlainString());
+			}
+			if (seq.getMaxValue() != null) {
+				out.print(" maxvalue ");
+				out.print(seq.getMaxValue().toPlainString());
+			}
+			out.print(" increment by ");
+			out.print(seq.getIncrementBy());
+			out.print(" start with ");
+			out.print(seq.getLastNumber().add(BigDecimal.ONE).toPlainString());
+			out.print(" cache ");
+			out.print(seq.getCacheSize());
+			if ("Y".equals(seq.getOrderFlag())) {
+				out.print(" order");
+			}
+			if ("Y".equals(seq.getCycleFlag())) {
+				out.print(" cycle");
+			}
+			out.println(";");
+		}
+	}
+
+	private String decodeIdxColumn(final IndexColumn column) {
+		if (column.getColumnExpression() != null && !"".equals(column.getColumnExpression())) {
+			return column.getColumnExpression();
+		} else {
+			return column.getColumnName();
 		}
 	}
 
 	private void exportSpringConfig(final File path, final String pkgName, final String schema, final List<Table> tables) throws IOException {
-		final Map<String, Object> map = new TreeMap<String, Object>();
+		final Map<String, Object> map = new HashMap<String, Object>(8, .999999f);
 		final String okSchema = cleanupSchema(schema);
 		final String nameSchema = lowerFirstLetter(okSchema);
 		map.put("datasource", nameSchema + "DataSource");
@@ -88,7 +218,7 @@ public class ExporterImpl implements Exporter {
 	}
 
 	private void exportBaseDao(final File da,  final File daImpl, final String pkgName) throws IOException {
-		final Map<String, Object> map = new TreeMap<String, Object>();
+		final Map<String, Object> map = new HashMap<String, Object>(2, .999999f);
 		map.put("package", pkgName);
 		doExport(da, "BaseDao.java", "baseDao.ftl", map);
 		doExport(daImpl, "BaseDaoImpl.java", "baseDaoImpl.ftl", map);
@@ -103,7 +233,7 @@ public class ExporterImpl implements Exporter {
 		final Set<String> imps = new TreeSet<String>(Collections2.filter(Collections2.transform(tbl.getColumns(), COLUMN_TO_IMPORT), IMPORT_FILTER));
 		final List<String[]> props = new ArrayList<String[]>(Collections2.transform(tbl.getColumns(), COLUMN_TO_PROPERTY));
 
-		final TreeMap<String, Object> map = new TreeMap<String, Object>();
+		final HashMap<String, Object> map = new HashMap<String, Object>(8, .999999f);
 		map.put("package", pkgName);
 		map.put("imports", imps);
 		map.put("props", props);
@@ -211,9 +341,10 @@ public class ExporterImpl implements Exporter {
 	private static final Map<String, String[]> IMPORT_MAP = createImportMap();
 	private static final Map<String, String> RESULT_SET_MAP = createResultSetMap();
 	private static final Map<String, String> SET_NULL_MAP = createSetNullValueMap();
+	private static final Map<String, String> HSQL_MAP = createHsqlMap();
 
 	private static Map<String, String[]> createTypeMapping() {
-		final Map<String, String[]> map = new TreeMap<String, String[]>();
+		final Map<String, String[]> map = new HashMap<String, String[]>(40, .999999f);
 
 		map.put("bigint", TLONG);
 		map.put("binary", BYTEARR);
@@ -244,6 +375,7 @@ public class ExporterImpl implements Exporter {
 		map.put("text", STRING);
 		map.put("time", STRING);
 		map.put("timestamp", DATE);
+		map.put("timestamp(3)", DATE);
 		map.put("timestamp(6)", DATE);
 		map.put("tinyblob", BYTEARR);
 		map.put("tinyint", TINT);
@@ -256,8 +388,15 @@ public class ExporterImpl implements Exporter {
 		return Collections.unmodifiableMap(map);
 	}
 
+	private static Map<String, String> createHsqlMap() {
+		final Map<String, String> map = new HashMap<>(9, .999999f);
+		map.put("varchar2", "varchar");
+		map.put("number", "numeric");
+		return map;
+	}
+	
 	private static Map<String, String> createNullMap() {
-		final Map<String, String> map = new TreeMap<String, String>();
+		final Map<String, String> map = new HashMap<String, String>(8, .999999f);
 
 		map.put("int", "java.lang.Integer");
 		map.put("long", "java.lang.Long");
@@ -268,7 +407,7 @@ public class ExporterImpl implements Exporter {
 	}
 
 	private static Map<String, String[]> createImportMap() {
-		final Map<String, String[]> map = new TreeMap<String, String[]>();
+		final Map<String, String[]> map = new HashMap<String, String[]>(16, .999999f);
 
 		map.put("byte[]", new String[]{null, "byte[]"});
 		map.put("int", new String[]{null, "int"});
@@ -288,7 +427,7 @@ public class ExporterImpl implements Exporter {
 	}
 
 	private static Map<String, String> createResultSetMap() {
-		final Map<String, String> map = new TreeMap<String, String>();
+		final Map<String, String> map = new HashMap<String, String>(16, .999999f);
 
 		map.put("int", "getInt");
 		map.put("long", "getLong");
@@ -308,7 +447,7 @@ public class ExporterImpl implements Exporter {
 	}
 
 	private static Map<String, String> createSetNullValueMap() {
-		final Map<String, String> map = new TreeMap<String, String>();
+		final Map<String, String> map = new HashMap<String, String>(16, .999999f);
 
 		map.put("Integer", "null");
 		map.put("Long", "null");

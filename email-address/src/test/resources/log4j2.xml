@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout>%d{ISO8601} %p %C{1} [%t] %m%n</PatternLayout>
+		</Console>
+		<RollingFile name="RollingFile"
+				fileName="${sys:byu.logdir}/email-address-tests.log"
+				filePattern="${sys:byu.logdir}/email-address-tests-%d{yyyy-MM-dd}.log.gz">
+			<PatternLayout>
+				<Pattern>%d{ISO8601} %p %C{1} [%t] %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+			<DefaultRolloverStrategy>
+				<Delete basePath="${sys:byu.logdir}">
+					<IfFileName glob="email-address-tests-*.log.gz" />
+					<IfLastModified age="30d" />
+				</Delete>
+			</DefaultRolloverStrategy>
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+		<Root level="DEBUG">
+			<AppenderRef ref="Console" />
+		</Root>
+		<Logger name="com" level="WARN" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="com.sun.jersey" level="WARN" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="com.sun.jersey.spi.spring.container.servlet.SpringServlet" level="WARN" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="http" level="WARN" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="httpclient" level="WARN" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="net" level="WARN" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org" level="WARN" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org.apache.cxf" level="WARN" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org.apache.cxf.interceptor" level="WARN" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org.apache.cxf.interceptor.LoggingInInterceptor" level="DEBUG" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org.apache.cxf.interceptor.LoggingOutInterceptor" level="DEBUG" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<!--<Logger name="org.apache.cxf.services.Traffic.Traffic.TrafficService" level="DEBUG" additivity="false">-->
+			<!--<AppenderRef ref="Console" />-->
+		<!--</Logger>-->
+		<!--<Logger name="org.apache.cxf.Traffic.Traffic.TrafficService" level="DEBUG" additivity="false">-->
+			<!--<AppenderRef ref="Console" />-->
+		<!--</Logger>-->
+		<Logger name="org.hibernate" level="WARN" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org.hibernate.type" level="INFO" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org.hibernate.SQL" level="INFO" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org.hibernate.util.DTDEntityResolver" level="ERROR" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org.springframework" level="WARN" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org.springframework.security" level="INFO" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org.springframework.security.cas" level="WARN" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org.springframework.transaction" level="WARN" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org.springframework.jdbc.datasource.DataSourceTransactionManager" level="WARN" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org.springframework.web" level="INFO" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org.springframework.web.context.ContextLoader" level="INFO" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org.springframework.web.servlet.DispatcherServlet" level="WARN" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org.springframework.webflow" level="WARN" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org.springframework.binding" level="INFO" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="edu" level="WARN" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="edu.byu.edge" level="INFO" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="edu.byu.filter" level="WARN" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="edu.byu.security" level="WARN" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="edu.byu.pro.email" level="DEBUG" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+	</Loggers>
+</Configuration>

@@ -307,6 +307,16 @@ public abstract class DefaultResultSet<T> implements ResultSet {
 	}
 
 	@Override
+	public <T> T getObject(final int columnIndex, final Class<T> type) throws SQLException {
+		return null;
+	}
+
+	@Override
+	public <T> T getObject(final String columnLabel, final Class<T> type) throws SQLException {
+		return null;
+	}
+
+	@Override
 	public int findColumn(final String columnLabel) throws SQLException {
 		return 0;
 	}

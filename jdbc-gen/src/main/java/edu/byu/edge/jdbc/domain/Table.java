@@ -15,6 +15,8 @@ public class Table {
 	protected String tableName;
 	protected String autoIncrement;
 	protected List<Column> columns;
+	protected Index primaryKey;
+	protected List<Index> indexList;
 
 	public Table() {
 	}
@@ -55,6 +57,31 @@ public class Table {
 
 	public void setColumns(final List<Column> columns) {
 		this.columns = columns;
+	}
+
+	public Index getPrimaryKey() {
+		return primaryKey;
+	}
+
+	public void setPrimaryKey(final Index primaryKey) {
+		this.primaryKey = primaryKey;
+	}
+
+	public List<Index> getIndexList() {
+		return indexList;
+	}
+
+	public void setIndexList(final List<Index> indexList) {
+		this.indexList = indexList;
+		if (indexList == null || indexList.isEmpty()) {
+			setPrimaryKey(null);
+		} else {
+			for (final Index index : indexList) {
+				if ("P".equals(index.getConstraintType())) {
+					setPrimaryKey(index);
+				}
+			}
+		}
 	}
 
 	@Override
