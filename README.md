@@ -24,7 +24,7 @@ Generates domain objects, data access interfaces, and stubs out data access impl
 ### personMerge
 
 ### query-tools
-DMBSs may (and most do) have a limit on the number of list elements passed as parameters. For example, Oracle has a limit of 1000 - where MY_COL in (val1, val2, val3, etc) - such that you can only pass in up to 1000 values for that in clause. Typically, we don't worry about that because most of our queries deal with individuals or we use a subselect for the in clause. When this is not the case, we must limit the size of the parameter list.
+DBMSs may (and most do) have a limit on the number of list elements passed as parameters. For example, Oracle has a limit of 1000 - where MY_COL in (val1, val2, val3, etc) - such that you can only pass in up to 1000 values for that in clause. Typically, we don't worry about that because most of our queries deal with individuals or we use a subselect for the in clause. When this is not the case, we must limit the size of the parameter list.
 
 ### soap-old-security
 
