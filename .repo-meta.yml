@@ -1,53 +1,51 @@
---- 
-$schemaver: 1.1
-name: edge-framework
-type: Library
-aliases:
-short_description: framework code from edge
-assignment_group: gro:AD-Back End Technologies and Applications
-notes: 
-maintained_by:
-  - wcspcbmt
-  - romrell4
-developed_by_byu: True
-ddd:
-  business_domain: 
-  ubiquitous_language_url: 
-  context_map_url: 
-links:
-  system_documentation_url: https://github.com/byu-oit/edge-framework
-  source_repo_url: https://github.com/byu-oit/edge-framework
-  swagger_urls:
-microservice: False
-technologies_used:
-  - Java
-  - FreeMarker
-stages:
-  production:
-    urls:
-      product_page: 
-      physical_url: 
-      virtual_url: 
-    hosting_location: Other
-    aws_account: 
-    relationships: 
-      depends_on:
-        db_read_write:
-        db_read_only:
-        software:
-      supports:
-        software:
-        service:
-      reverse_proxy: 
-      runs_on:
-        server_cluster:
-        virtual_server:
-        rack_server:
-        blade_server:
-tags:
-  data-sensitivity: confidential
-  env: prd
-  app: edge-framework
-  team: gro:AD-Back End Technologies and Applications
-federation_json_url: https://raw.githubusercontent.com/byu-oit/edge-framework/master/.repo-meta.yml
-
+---
+$schemaver: 2.0
+repo_url: https://github.com/byu-oit/edge-framework
+software:
+  - name: edge-framework
+    type: Library
+    aliases:
+    short_description: framework code from edge
+    assignment_group: gro:AD-Back End Technologies and Applications
+    notes:
+    maintained_by:
+      - wcspcbmt
+      - romrell4
+    developed_by_byu: true
+    ddd:
+        business_domain:
+        ubiquitous_language_url:
+        context_map_url:
+    links:
+        system_documentation_url: https://github.com/byu-oit/edge-framework
+        swagger_urls:
+    microservice: false
+    technologies_used:
+      - Java
+      - FreeMarker
+    stages:
+        production:
+            urls:
+                product_page:
+                physical_url:
+                virtual_url:
+            hosting_location: Other
+            aws_account:
+            relationships:
+                depends_on:
+                    db_read_write:
+                    db_read_only:
+                    software:
+                supports:
+                    software:
+                    service:
+                reverse_proxy:
+                runs_on:
+                    server_cluster:
+                    virtual_server:
+                    rack_server:
+                    blade_server:
+    tags:
+        data-sensitivity: confidential
+        app: edge-framework
+        team: gro:AD-Back End Technologies and Applications
