@@ -32,6 +32,7 @@
 		<byu-crypto.version>1.0.1</byu-crypto.version>
 		<byu-util.version>2.1.0</byu-util.version>
 		<byuAnnotations.version>1.0.1</byuAnnotations.version>
+		<byuSecureDriver.version>2.0.0</byuSecureDriver.version>
 		<byuSecurity.version>1.2.0.1</byuSecurity.version>
 		<byuSpringUtil.version>1.1.0</byuSpringUtil.version>
 		<byuProClient.version>1.0.1</byuProClient.version>
