@@ -111,7 +111,7 @@
 		<lmax-disruptor.version>3.3.5</lmax-disruptor.version>
 		<log4j.version>1.2.17</log4j.version>
 		<!-- Please be aware that log4j 2 as the destination requires different config and you probably need to include the log4j 1.x api bridge -->
-		<log4j2.version>2.6.2</log4j2.version>
+		<log4j2.version>2.13.3</log4j2.version>
 		<log4j-extras.version>1.2.17</log4j-extras.version>
 		<mockito.version>1.10.19</mockito.version>
 		<mysql-connector-java.version>5.1.38</mysql-connector-java.version>
