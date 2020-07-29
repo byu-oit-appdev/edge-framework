@@ -18,7 +18,7 @@
 	<properties>
 		<hikari.version>2.4.9</hikari.version>
 		<junit.version>4.12</junit.version>
-		<log4j2.version>2.6.2</log4j2.version>
+		<log4j2.version>2.13.3</log4j2.version>
 		<oracle.version>12.1.0.2</oracle.version>
 	</properties>
 
