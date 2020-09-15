@@ -54,7 +54,7 @@
 		<servlet.jstl.version>1.1.2</servlet.jstl.version>
 		<slf4j.version>1.6.4</slf4j.version>
 		<spring.version>3.1.4.RELEASE</spring.version>
-		<spring.security.version>3.1.4.RELEASE</spring.security.version>
+		<spring.security.version>5.4.0</spring.security.version>
 		<stax.version>1.0.1</stax.version>
 		<!--<hibernate.version>4.1.0</hibernate.version>-->
 		<java.inject.version>1</java.inject.version>
